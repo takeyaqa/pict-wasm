@@ -1,3 +1,12 @@
+# @takeyaqa/pict-wasm
+
+Unofficial WebAssembly build of [Microsoft PICT](https://github.com/microsoft/pict).  
+This package works in both **Node.js** and **browsers**.
+
+> [!IMPORTANT]
+> This is an independent project, not affiliated with Microsoft.  
+> Original PICT is licensed under the MIT License.
+
 Pairwise Independent Combinatorial Testing
 ==========================================
 
