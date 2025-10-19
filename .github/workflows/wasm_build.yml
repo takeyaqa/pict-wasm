@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-wasm:
     runs-on: ubuntu-latest
     container: emscripten/emsdk:4.0.17
 
