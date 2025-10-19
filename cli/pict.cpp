@@ -142,7 +142,12 @@ int main
     std::locale loc;
     try
     {
+#ifdef __EMSCRIPTEN__
+        // workaround for WebAssembly (Emscripten) which doesn't seem to support "C.UTF-8" locale
+        loc = std::locale::classic();
+#else
         loc = std::locale("C.UTF-8");
+#endif
     }
     catch ( const std::runtime_error&)
     {

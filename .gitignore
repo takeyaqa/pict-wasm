@@ -21,3 +21,8 @@ pict
 *.o
 .DS_Store
 build
+
+# WebAssembly
+/dist
+/node_modules
+/wasm-work
