@@ -1,0 +1,19 @@
+name: Build WebAssembly
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: emscripten/emsdk:4.0.17
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm run build
