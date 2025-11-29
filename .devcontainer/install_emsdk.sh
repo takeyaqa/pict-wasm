@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 export EMSDK_DIR=/usr/local/emsdk
 export EMSDK_VERSION=4.0.17
