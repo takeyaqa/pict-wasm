@@ -1,36 +1,54 @@
 {
   "name": "@takeyaqa/pict-wasm",
-  "version": "3.7.4-wasm.7",
+  "version": "3.7.4-wasm.8",
   "description": "Unofficial WebAssembly build of Microsoft's PICT (pairwise testing tool), compatible with both Node.js and browsers.",
-  "main": "dist/index.js",
-  "type": "module",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "make wasm && npx tsc",
-    "clean": "make wasm-clean"
-  },
-  "devDependencies": {
-    "typescript": "^5.9.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/takeyaqa/pict-wasm.git"
-  },
-  "author": "Microsoft Corporation/Takeshi Kishi",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/takeyaqa/pict-wasm/issues"
-  },
-  "homepage": "https://github.com/takeyaqa/pict-wasm#readme",
   "keywords": [
     "pict",
     "testing",
     "testing-tools",
+    "test-case-generation",
     "combinatorial-testing",
+    "pairwise",
     "pairwise-testing",
     "webassembly"
-  ]
+  ],
+  "homepage": "https://github.com/takeyaqa/pict-wasm#readme",
+  "bugs": {
+    "url": "https://github.com/takeyaqa/pict-wasm/issues"
+  },
+  "license": "MIT",
+  "contributors": [
+    "Microsoft Corporation",
+    "Takeshi Kishi"
+  ],
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "wasm-src/index.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takeyaqa/pict-wasm.git"
+  },
+  "scripts": {
+    "build": "make wasm && tsc",
+    "clean": "make wasm-clean"
+  },
+  "devDependencies": {
+    "typescript": "~5.9"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=22 <23"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": ">=10 <11"
+    }
+  },
+  "publishConfig": {
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts"
+  }
 }
