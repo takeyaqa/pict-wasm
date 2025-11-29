@@ -9,7 +9,7 @@ if [ ! -d "${EMSDK_DIR}" ]; then
     sudo mkdir -p "${EMSDK_DIR}"
 
     echo "Cloning the emsdk"
-    sudo git clone "https://github.com/emscripten-core/emsdk.git" ${EMSDK_DIR}
+    sudo git clone "https://github.com/emscripten-core/emsdk.git" "${EMSDK_DIR}"
 
     echo "Installing the latest EMSDK"
     sudo ${EMSDK_DIR}/emsdk install ${EMSDK_VERSION}
