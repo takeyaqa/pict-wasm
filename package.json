@@ -24,6 +24,9 @@
   "files": [
     "dist"
   ],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/takeyaqa/pict-wasm.git"
@@ -44,10 +47,5 @@
       "name": "pnpm",
       "version": ">=10 <11"
     }
-  },
-  "type": "module",
-  "publishConfig": {
-    "main": "dist/index.js",
-    "types": "dist/index.d.ts"
   }
 }
