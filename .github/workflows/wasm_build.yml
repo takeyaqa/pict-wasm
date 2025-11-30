@@ -3,19 +3,49 @@ on:
   push:
   pull_request:
 
-jobs:
-  build-wasm:
-    runs-on: ubuntu-latest
-    container: emscripten/emsdk:4.0.17
+env:
+  PNPM_VERSION: 10
+  NODE_VERSION: 22
 
+jobs:
+  lint:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
         with:
-          version: 10
+          version: ${{ env.PNPM_VERSION }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run lint
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - run: pnpm install
+      - run: pnpm run format
+  build-wasm:
+    needs: [lint, format]
+    runs-on: ubuntu-latest
+    container: emscripten/emsdk:4.0.17
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
       - run: pnpm install
       - run: pnpm run build
