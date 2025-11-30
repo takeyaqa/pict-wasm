@@ -1,3 +1,7 @@
+## pict-wasm Additional Reporting
+
+For vulnerabilities affecting the pict-wasm-specific WebAssembly, JavaScript, or other supplementary components, please submit a report via [Report a Vulnerability](https://github.com/takeyaqa/pict-wasm/security/advisories/new).
+
 <!-- BEGIN MICROSOFT SECURITY.MD V0.0.5 BLOCK -->
 
 ## Security
