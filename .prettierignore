@@ -1,0 +1,7 @@
+.github/workflows/codeql-analysis.yml
+.github/workflows/main.yml
+.github/workflows/nuget-publish.yml
+doc/pict.md
+pnpm-lock.yaml
+README.md
+SECURITY.md

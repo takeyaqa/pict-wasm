@@ -11,7 +11,7 @@
     "strict": true,
     "skipLibCheck": true,
     "rootDir": "wasm-src",
-    "outDir": "dist",
+    "outDir": "dist"
   },
-  "include": ["wasm-src/**/*.ts"],
+  "include": ["wasm-src/**/*.ts"]
 }

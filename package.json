@@ -33,10 +33,18 @@
   },
   "scripts": {
     "build": "make wasm && tsc",
-    "clean": "make wasm-clean"
+    "clean": "make wasm-clean",
+    "lint": "eslint .",
+    "format": "prettier --check ."
   },
   "devDependencies": {
-    "typescript": "~5.9"
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.2",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.48.0"
   },
   "devEngines": {
     "runtime": {
