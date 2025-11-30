@@ -32,11 +32,11 @@
     "url": "git+https://github.com/takeyaqa/pict-wasm.git"
   },
   "scripts": {
-    "build": "make wasm && tsc -b",
+    "build": "make wasm && tsc",
     "clean": "make wasm-clean",
     "lint": "eslint .",
     "format": "prettier --check .",
-    "typecheck": "tsc -b --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
