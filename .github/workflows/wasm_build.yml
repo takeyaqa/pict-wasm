@@ -50,7 +50,7 @@ jobs:
   build-wasm:
     needs: [lint, format, typecheck]
     runs-on: ubuntu-latest
-    container: emscripten/emsdk:4.0.17
+    container: emscripten/emsdk:4.0.20
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@41ff72655975bd51cab0327fa583b6e92b6d3061 # v4.2.0
