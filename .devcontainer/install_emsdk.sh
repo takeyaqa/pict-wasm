@@ -3,7 +3,7 @@
 set -eu
 
 export EMSDK_DIR=/usr/local/emsdk
-export EMSDK_VERSION=4.0.17
+export EMSDK_VERSION=4.0.20
 
 if [ ! -d "${EMSDK_DIR}" ]; then
     echo "Creating ${EMSDK_DIR} directory"
