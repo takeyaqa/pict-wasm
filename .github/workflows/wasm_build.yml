@@ -1,6 +1,5 @@
 name: Build WebAssembly
 on:
-  push:
   pull_request:
 
 env:
