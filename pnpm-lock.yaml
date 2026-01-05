@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       '@eslint/js':
-        specifier: ^9.39.1
+        specifier: ^9.39.2
         version: 9.39.2
       '@tsconfig/node22':
         specifier: ^22.0.5
         version: 22.0.5
       eslint:
-        specifier: ^9.39.1
+        specifier: ^9.39.2
         version: 9.39.2
       eslint-config-prettier:
         specifier: ^10.1.8
@@ -24,13 +24,13 @@ importers:
         specifier: ^17.0.0
         version: 17.0.0
       prettier:
-        specifier: ^3.7.2
+        specifier: ^3.7.4
         version: 3.7.4
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.48.0
+        specifier: ^8.51.0
         version: 8.51.0(eslint@9.39.2)(typescript@5.9.3)
 
 packages:
