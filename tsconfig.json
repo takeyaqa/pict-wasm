@@ -2,7 +2,8 @@
   "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
     "rootDir": "wasm-src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "declaration": true
   },
   "include": ["wasm-src/**/*.ts"]
 }
