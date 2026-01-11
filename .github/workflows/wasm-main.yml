@@ -1,4 +1,4 @@
-name: Build WebAssembly
+name: Check and Build WebAssembly
 on:
   pull_request:
 
