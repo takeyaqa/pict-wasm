@@ -1,4 +1,4 @@
-name: Publish WebAssembly to npm repository
+name: Publish WebAssembly to npm registry
 on:
   release:
     types: [published]
@@ -25,11 +25,13 @@ jobs:
         with:
           python-version: 3.13
       - name: Install Emscripten SDK
-        run: |
-          bash install_emsdk.sh
-          echo "$GITHUB_WORKSPACE/.emsdk" >> "$GITHUB_PATH"
-          echo "$GITHUB_WORKSPACE/.emsdk/upstream/emscripten" >> "$GITHUB_PATH"
-      - run: npm install -g npm@latest
+        run: bash install_emsdk.sh
+      - name: Update npm to latest version
+        run: npm install -g npm@latest
       - run: pnpm install
-      - run: pnpm run build
-      - run: pnpm publish --tag latest
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
+      - name: Publish to npm registry
+        run: pnpm publish --tag latest

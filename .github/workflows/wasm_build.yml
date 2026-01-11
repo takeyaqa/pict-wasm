@@ -62,10 +62,11 @@ jobs:
         with:
           python-version: 3.13
       - name: Install Emscripten SDK
-        run: |
-          bash install_emsdk.sh
-          echo "$GITHUB_WORKSPACE/.emsdk" >> "$GITHUB_PATH"
-          echo "$GITHUB_WORKSPACE/.emsdk/upstream/emscripten" >> "$GITHUB_PATH"
+        run: bash install_emsdk.sh
       - run: pnpm install
-      - run: pnpm run build
-      - run: pnpm run test
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
+      - name: Test WebAssembly
+        run: pnpm run test
