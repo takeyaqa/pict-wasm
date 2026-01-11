@@ -24,7 +24,6 @@ jobs:
       - name: Install Emscripten SDK
         run: |
           ./install_emsdk.sh
-          source ./emsdk/emsdk_env.sh
       - run: npm install -g npm@latest
       - run: pnpm install
       - run: pnpm run build
