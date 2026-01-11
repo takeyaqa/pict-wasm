@@ -21,7 +21,7 @@ if [ ! -d "${EMSDK_DIR}" ]; then
     echo "Workaround: Installing npm devDependencies for emscripten"
     cd ${EMSDK_DIR}/upstream/emscripten && npm ci
     cd -
-
-    echo "EMSDK installation complete"
-    echo "Run 'source ${EMSDK_DIR}/emsdk_env.sh' to set up the environment"
 fi
+
+echo "EMSDK installation complete"
+echo "Run 'source ${EMSDK_DIR}/emsdk_env.sh' to set up the environment"
