@@ -61,6 +61,8 @@ jobs:
       - name: Install Emscripten SDK
         run: |
           ./install_emsdk.sh
+          echo "$GITHUB_WORKSPACE/.emsdk" >> "$GITHUB_PATH"
+          echo "$GITHUB_WORKSPACE/.emsdk/upstream/emscripten" >> "$GITHUB_PATH"
       - run: pnpm install
       - run: pnpm run build
       - run: pnpm run test
