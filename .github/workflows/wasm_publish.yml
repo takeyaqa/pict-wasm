@@ -1,4 +1,4 @@
-name: Publish WebAssembly to npm repository
+name: Publish WebAssembly to npm registry
 on:
   release:
     types: [published]
@@ -10,7 +10,6 @@ permissions:
 jobs:
   publish-wasm:
     runs-on: ubuntu-latest
-    container: emscripten/emsdk:4.0.20
 
     steps:
       - uses: actions/checkout@v6
@@ -22,7 +21,17 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
-      - run: npm install -g npm@latest
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13
+      - name: Install Emscripten SDK
+        run: bash install_emsdk.sh
+      - name: Update npm to latest version
+        run: npm install -g npm@latest
       - run: pnpm install
-      - run: pnpm run build
-      - run: pnpm publish --tag latest
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
+      - name: Publish to npm registry
+        run: pnpm publish --tag latest
