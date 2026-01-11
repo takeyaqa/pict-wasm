@@ -64,7 +64,8 @@ jobs:
       - name: Install Emscripten SDK
         run: bash install_emsdk.sh
       - run: pnpm install
-      - run: pnpm dlx playwright install --with-deps
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
       - name: Build WebAssembly
         run: |
           source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
