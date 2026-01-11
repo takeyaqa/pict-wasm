@@ -2,6 +2,11 @@
 
 set -eu
 
+if [ ! -f .emsdk_version ]; then
+    echo "Error: .emsdk_version file not found. Please create this file containing the desired Emscripten SDK version." >&2
+    exit 1
+fi
+
 export EMSDK_DIR=.emsdk
 export EMSDK_VERSION="$(tr -d '\n' < .emsdk_version)"
 
