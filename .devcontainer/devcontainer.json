@@ -8,7 +8,7 @@
     "ghcr.io/devcontainers/features/python:1": {}
   },
 
-  "postCreateCommand": ".devcontainer/install_emsdk.sh",
+  "postCreateCommand": "./install_emsdk.sh",
 
   "customizations": {
     "vscode": {

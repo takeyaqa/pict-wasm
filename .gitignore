@@ -23,6 +23,7 @@ pict
 build
 
 # WebAssembly
+/.emsdk
 /dist
 /node_modules
 /wasm-work
