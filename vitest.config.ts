@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitest/config'
+import { playwright } from '@vitest/browser-playwright'
 
 export default defineConfig({
   test: {
@@ -6,8 +7,24 @@ export default defineConfig({
       {
         test: {
           name: 'node',
-          root: './wasm-test',
+          include: ['./wasm-test/**/*.spec.ts'],
           environment: 'node',
+        },
+      },
+      {
+        test: {
+          name: 'browser',
+          include: ['./wasm-test/**/*.spec.ts'],
+          browser: {
+            enabled: true,
+            provider: playwright(),
+            headless: true,
+            instances: [
+              { browser: 'chromium' },
+              { browser: 'firefox' },
+              { browser: 'webkit' },
+            ],
+          },
         },
       },
     ],
