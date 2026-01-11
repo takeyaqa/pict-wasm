@@ -10,7 +10,6 @@ permissions:
 jobs:
   publish-wasm:
     runs-on: ubuntu-latest
-    container: emscripten/emsdk:4.0.20
 
     steps:
       - uses: actions/checkout@v6
@@ -22,6 +21,10 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
+      - name: Install Emscripten SDK
+        run: |
+          ./install_emsdk.sh
+          source ./emsdk/emsdk_env.sh
       - run: npm install -g npm@latest
       - run: pnpm install
       - run: pnpm run build
