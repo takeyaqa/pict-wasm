@@ -21,6 +21,9 @@ jobs:
           node-version: 22
           cache: pnpm
           registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13
       - name: Install Emscripten SDK
         run: |
           ./install_emsdk.sh

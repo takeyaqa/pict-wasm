@@ -58,6 +58,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: 3.13
       - name: Install Emscripten SDK
         run: |
           ./install_emsdk.sh
