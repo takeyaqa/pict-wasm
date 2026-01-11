@@ -24,8 +24,7 @@ if [ ! -d "${EMSDK_DIR}" ]; then
     ${EMSDK_DIR}/emsdk activate ${EMSDK_VERSION}
 
     echo "Workaround: Installing npm devDependencies for emscripten"
-    cd ${EMSDK_DIR}/upstream/emscripten && npm ci
-    cd -
+    (cd ${EMSDK_DIR}/upstream/emscripten && npm ci)
 fi
 
 echo "EMSDK installation complete"
