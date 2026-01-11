@@ -26,7 +26,7 @@ jobs:
           python-version: 3.13
       - name: Install Emscripten SDK
         run: |
-          ./install_emsdk.sh
+          bash install_emsdk.sh
           echo "$GITHUB_WORKSPACE/.emsdk" >> "$GITHUB_PATH"
           echo "$GITHUB_WORKSPACE/.emsdk/upstream/emscripten" >> "$GITHUB_PATH"
       - run: npm install -g npm@latest
