@@ -46,7 +46,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm run typecheck
-  build-wasm:
+  build-and-test-wasm:
     needs: [lint, format, typecheck]
     runs-on: ubuntu-latest
     container: emscripten/emsdk:4.0.20
@@ -61,3 +61,4 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - run: pnpm run build
+      - run: pnpm run test

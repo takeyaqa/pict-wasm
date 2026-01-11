@@ -34,6 +34,8 @@
   "scripts": {
     "build": "make wasm && tsc",
     "clean": "make wasm-clean",
+    "test": "vitest",
+    "test:nowatch": "vitest run",
     "lint": "eslint .",
     "format": "prettier --check .",
     "typecheck": "tsc --noEmit"
@@ -46,7 +48,8 @@
     "globals": "^17.0.0",
     "prettier": "^3.7.4",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.51.0"
+    "typescript-eslint": "^8.51.0",
+    "vitest": "^4.0.16"
   },
   "devEngines": {
     "runtime": {
