@@ -224,7 +224,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`)
       await pictRunner.init()
     })
 
-    it('should run with order with combinations are 3', () => {
+    it('should run with order when combinations are 3', () => {
       const output = pictRunner.run(
         [
           { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
@@ -281,7 +281,7 @@ Compression: ON, OFF`)
       expect(output.message).toBe('')
     })
 
-    it('should run with randomize generation', () => {
+    it('should run with randomized generation', () => {
       const output = pictRunner.run(
         [
           { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
@@ -314,7 +314,7 @@ Compression: ON, OFF`)
       expect(output.message).toMatch(/Used seed: [0-9]+/)
     })
 
-    it('should run with randomize generation and defined seed', () => {
+    it('should produce deterministic results when seed is provided', () => {
       const output = pictRunner.run(
         [
           { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
