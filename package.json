@@ -35,7 +35,7 @@
     "build": "make wasm && tsc",
     "clean": "make wasm-clean",
     "test": "vitest",
-    "test:nowatch": "vitest run",
+    "test:no-watch": "vitest run",
     "lint": "eslint .",
     "format": "prettier --check .",
     "typecheck": "tsc --noEmit"
