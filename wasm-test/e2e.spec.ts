@@ -12,7 +12,7 @@ describe('PictRunner', () => {
     it('should throw error if run is called before init', () => {
       const pictRunner = new PictRunner()
       expect(() => {
-        pictRunner.run([], {})
+        pictRunner.run([])
       }).toThrowError('PictRunner not initialized')
     })
   })
@@ -26,20 +26,17 @@ describe('PictRunner', () => {
     })
 
     it('should run without errors when parameters are ascii', () => {
-      const output = pictRunner.run(
-        [
-          { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
-          { name: 'Size', values: '10, 100, 500, 1000, 5000, 10000, 40000' },
-          { name: 'Format method', values: 'Quick, Slow' },
-          { name: 'File system', values: 'FAT, FAT32, NTFS' },
-          {
-            name: 'Cluster size',
-            values: '512, 1024, 2048, 4096, 8192, 16384, 32768, 65536',
-          },
-          { name: 'Compression', values: 'ON, OFF' },
-        ],
-        {},
-      )
+      const output = pictRunner.run([
+        { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
+        { name: 'Size', values: '10, 100, 500, 1000, 5000, 10000, 40000' },
+        { name: 'Format method', values: 'Quick, Slow' },
+        { name: 'File system', values: 'FAT, FAT32, NTFS' },
+        {
+          name: 'Cluster size',
+          values: '512, 1024, 2048, 4096, 8192, 16384, 32768, 65536',
+        },
+        { name: 'Compression', values: 'ON, OFF' },
+      ])
       expect(output.header).toEqual([
         'Type',
         'Size',
@@ -83,28 +80,25 @@ Compression: ON, OFF`)
     })
 
     it('should run without errors when parameters are unicode and special characters', () => {
-      const output = pictRunner.run(
-        [
-          {
-            name: 'null',
-            values: 'undefined, true, false, NaN, Infinity, eval',
-          },
-          { name: '⅛⅜⅝⅞', values: 'Ω≈ç√∫˜µ≤≥÷, ٠١٢٣٤٥٦٧٨٩, ¡™£¢∞§¶•ªº–≠' },
-          {
-            name: '社會科學院語學研究所',
-            values: '表ポあA鷗ŒéＢ逍Üßªąñ丂㐀𠀀, 캄사함니다',
-          },
-          {
-            name: '╯°□°）╯︵ ┻━┻',
-            values: '👾 🙇 💁 🙅 🙆 🙋 🙎 🙍, ✋🏿 💪🏿 👐🏿 🙌🏿 👏🏿 🙏🏿, 🇺🇸🇷🇺🇸🇦',
-          },
-          {
-            name: 'script alert0 /script',
-            values: 'مرحبًا, בְּרֵאשִׁית',
-          },
-        ],
-        {},
-      )
+      const output = pictRunner.run([
+        {
+          name: 'null',
+          values: 'undefined, true, false, NaN, Infinity, eval',
+        },
+        { name: '⅛⅜⅝⅞', values: 'Ω≈ç√∫˜µ≤≥÷, ٠١٢٣٤٥٦٧٨٩, ¡™£¢∞§¶•ªº–≠' },
+        {
+          name: '社會科學院語學研究所',
+          values: '表ポあA鷗ŒéＢ逍Üßªąñ丂㐀𠀀, 캄사함니다',
+        },
+        {
+          name: '╯°□°）╯︵ ┻━┻',
+          values: '👾 🙇 💁 🙅 🙆 🙋 🙎 🙍, ✋🏿 💪🏿 👐🏿 🙌🏿 👏🏿 🙏🏿, 🇺🇸🇷🇺🇸🇦',
+        },
+        {
+          name: 'script alert0 /script',
+          values: 'مرحبًا, בְּרֵאשִׁית',
+        },
+      ])
       expect(output.header).toEqual([
         'null',
         '⅛⅜⅝⅞',
@@ -237,7 +231,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`)
           },
           { name: 'Compression', values: 'ON, OFF' },
         ],
-        { options: { orderOfCombinations: 3, randomizeGeneration: false } },
+        { options: { orderOfCombinations: 3 } },
       )
       expect(output.header).toEqual([
         'Type',
@@ -294,7 +288,7 @@ Compression: ON, OFF`)
           },
           { name: 'Compression', values: 'ON, OFF' },
         ],
-        { options: { orderOfCombinations: 2, randomizeGeneration: true } },
+        { options: { randomizeGeneration: true } },
       )
       expect(output.header).toEqual([
         'Type',
@@ -329,7 +323,6 @@ Compression: ON, OFF`)
         ],
         {
           options: {
-            orderOfCombinations: 2,
             randomizeGeneration: true,
             randomizeSeed: 0,
           },

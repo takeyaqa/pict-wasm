@@ -16,7 +16,7 @@ export interface PictOutput {
 }
 
 export interface PictOptions {
-  orderOfCombinations: number
-  randomizeGeneration: boolean
+  orderOfCombinations?: number
+  randomizeGeneration?: boolean
   randomizeSeed?: number
 }
