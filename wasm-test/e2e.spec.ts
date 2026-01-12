@@ -12,17 +12,7 @@ describe('PictRunner', () => {
     it('should throw error if run is called before init', () => {
       const pictRunner = new PictRunner()
       expect(() => {
-        pictRunner.run([
-          { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
-          { name: 'Size', values: '10, 100, 500, 1000, 5000, 10000, 40000' },
-          { name: 'Format method', values: 'Quick, Slow' },
-          { name: 'File system', values: 'FAT, FAT32, NTFS' },
-          {
-            name: 'Cluster size',
-            values: '512, 1024, 2048, 4096, 8192, 16384, 32768, 65536',
-          },
-          { name: 'Compression', values: 'ON, OFF' },
-        ])
+        pictRunner.run([])
       }).toThrowError('PictRunner not initialized')
     })
   })
