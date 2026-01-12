@@ -1,6 +1,6 @@
 {
   "name": "@takeyaqa/pict-wasm",
-  "version": "3.7.4-wasm.10",
+  "version": "3.7.4-wasm.11",
   "description": "Unofficial WebAssembly build of Microsoft's PICT (pairwise testing tool), compatible with both Node.js and browsers.",
   "keywords": [
     "pict",
