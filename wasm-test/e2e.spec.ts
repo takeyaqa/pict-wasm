@@ -12,7 +12,9 @@ describe('PictRunner', () => {
     it('should throw error if run is called before init', () => {
       const pictRunner = new PictRunner()
       expect(() => {
-        pictRunner.run([], {})
+        pictRunner.run([
+          { name: 'Type', values: 'Single, Span, Stripe, Mirror, RAID-5' },
+        ])
       }).toThrowError('PictRunner not initialized')
     })
   })
