@@ -34,7 +34,7 @@ export class PictRunner {
       subModels?: PictSubModel[]
       constraintsText?: string
       options?: PictOptions
-    },
+    } = {},
   ): PictOutput {
     if (!this.pict) {
       throw new Error('PictRunner not initialized')
