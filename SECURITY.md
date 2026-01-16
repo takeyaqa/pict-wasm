@@ -1,7 +1,7 @@
-# pict-wasm Additional Reporting Security Issues
+# Reporting Security Issues for pict-wasm
 
 > [!NOTE]
-> For vulnerabilities affecting the pict-wasm specific WebAssembly, JavaScript, or other supplementary components.
+> Use this process to report for vulnerabilities affecting the pict-wasm specific WebAssembly, JavaScript, or other supplementary components.
 
 The pict-wasm team and community take security bugs in pict-wasm seriously. We appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
 
@@ -11,7 +11,7 @@ The pict-wasm team will send a response indicating the next steps in handling yo
 
 Report security bugs in third-party modules to the person or team maintaining the module. You can also report a vulnerability through the [npm contact form](https://www.npmjs.com/support) by selecting "I'm reporting a security vulnerability".
 
-# Original Microsoft Pict Reporting Security Issues
+# Reporting Security Issues for Original Microsoft Pict
 
 <!-- BEGIN MICROSOFT SECURITY.MD V0.0.5 BLOCK -->
 
