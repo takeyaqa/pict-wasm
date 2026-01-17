@@ -1,7 +1,7 @@
 # Contributing
 
 > [!NOTE]
-> Use this guideline to the pict-wasm specific WebAssembly, JavaScript, or other supplementary components.
+> Use this guideline for the pict-wasm specific WebAssembly, JavaScript, or other supplementary components.
 
 Thank you for your interest in this project!
 
