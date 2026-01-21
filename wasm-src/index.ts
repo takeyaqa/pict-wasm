@@ -3,25 +3,25 @@ import {
   PictOutput,
   PictOptions,
   PictSubModel,
-} from './types.js'
+} from "./types.js";
 // @ts-expect-error: Module has no types
-import createModule, { MainModule } from '../dist/pict.mjs'
+import createModule, { MainModule } from "../dist/pict.mjs";
 
 export class PictRunner {
-  private pict: MainModule | null = null
-  private stdoutCapture: OutputCapture
-  private stderrCapture: OutputCapture
+  private pict: MainModule | null = null;
+  private stdoutCapture: OutputCapture;
+  private stderrCapture: OutputCapture;
 
   constructor() {
-    this.stdoutCapture = new OutputCapture()
-    this.stderrCapture = new OutputCapture()
+    this.stdoutCapture = new OutputCapture();
+    this.stderrCapture = new OutputCapture();
   }
 
   public async init(): Promise<void> {
     this.pict = await createModule({
       print: this.stdoutCapture.capture,
       printErr: this.stderrCapture.capture,
-    })
+    });
   }
 
   public run(
@@ -31,77 +31,77 @@ export class PictRunner {
       constraintsText,
       options,
     }: {
-      subModels?: PictSubModel[]
-      constraintsText?: string
-      options?: PictOptions
+      subModels?: PictSubModel[];
+      constraintsText?: string;
+      options?: PictOptions;
     } = {},
   ): PictOutput {
     if (!this.pict) {
-      throw new Error('PictRunner not initialized')
+      throw new Error("PictRunner not initialized");
     }
     // Build the model
     const parametersText = parameters
       .map((m) => `${m.name}: ${m.values}`)
-      .join('\n')
+      .join("\n");
     const subModelsText = subModels
       ? subModels
           .map(
-            (m) => `{ ${m.parameterNames.join(', ')} } @ ${m.order.toString()}`,
+            (m) => `{ ${m.parameterNames.join(", ")} } @ ${m.order.toString()}`,
           )
-          .join('\n')
-      : ''
-    let model = parametersText
+          .join("\n")
+      : "";
+    let model = parametersText;
     if (subModelsText) {
-      model = `${model}\n\n${subModelsText}`
+      model = `${model}\n\n${subModelsText}`;
     }
     if (constraintsText) {
-      model = `${model}\n\n${constraintsText}`
+      model = `${model}\n\n${constraintsText}`;
     }
-    this.pict.FS.writeFile('model.txt', model)
+    this.pict.FS.writeFile("model.txt", model);
 
     // Set the options
-    const switches: string[] = []
+    const switches: string[] = [];
     if (options) {
       if (options.orderOfCombinations) {
-        switches.push(`/o:${options.orderOfCombinations.toString()}`)
+        switches.push(`/o:${options.orderOfCombinations.toString()}`);
       }
       if (options.randomizeGeneration) {
         if (options.randomizeSeed === 0 || options.randomizeSeed) {
-          switches.push(`/r:${options.randomizeSeed.toString()}`)
+          switches.push(`/r:${options.randomizeSeed.toString()}`);
         } else {
-          switches.push('/r')
+          switches.push("/r");
         }
       }
     }
-    this.pict.callMain(['model.txt', ...switches])
-    this.pict.FS.unlink('model.txt')
-    const err = this.stderrCapture.getOuts()
+    this.pict.callMain(["model.txt", ...switches]);
+    this.pict.FS.unlink("model.txt");
+    const err = this.stderrCapture.getOuts();
     const out = this.stdoutCapture
       .getOuts()
-      .split('\n')
-      .map((m) => m.split('\t'))
+      .split("\n")
+      .map((m) => m.split("\t"));
     return {
       header: out[0],
       body: out.slice(1),
       modelFile: model,
       message: err,
-    }
+    };
   }
 }
 
 class OutputCapture {
-  private outs: string[] = []
+  private outs: string[] = [];
   public capture = (line: string) => {
-    this.outs.push(line)
-  }
+    this.outs.push(line);
+  };
 
   public getOuts(): string {
-    const out = this.outs.join('\n')
-    this.clear()
-    return out
+    const out = this.outs.join("\n");
+    this.clear();
+    return out;
   }
 
   public clear(): void {
-    this.outs = []
+    this.outs = [];
   }
 }
