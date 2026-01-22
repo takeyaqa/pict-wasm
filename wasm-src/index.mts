@@ -1,11 +1,10 @@
-import {
+import type {
   PictParameter,
   PictOutput,
   PictOptions,
   PictSubModel,
 } from "./types.mjs";
-// @ts-expect-error: Module has no types
-import createModule, { MainModule } from "../dist/pict.mjs";
+import createModule, { type MainModule } from "../dist/pict.mjs";
 
 export class PictRunner {
   private pict: MainModule | null = null;

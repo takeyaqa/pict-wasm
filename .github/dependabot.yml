@@ -10,10 +10,6 @@ updates:
       prefix: "build"
       include: "scope"
     groups:
-      vitest:
-        patterns:
-          - "@vitest/*"
-          - "vitest"
       eslint-and-prettier:
         patterns:
           - "@eslint/*"
@@ -21,6 +17,13 @@ updates:
           - "eslint-config-prettier"
           - "prettier"
           - "typescript-eslint"
+      tsconfig:
+        patterns:
+          - "@tsconfig/*"
+      vitest:
+        patterns:
+          - "@vitest/*"
+          - "vitest"
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
