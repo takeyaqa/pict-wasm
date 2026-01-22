@@ -5,5 +5,5 @@
     "outDir": "dist",
     "declaration": true
   },
-  "include": ["wasm-src/**/*.ts"]
+  "include": ["wasm-src/**/*.mts"]
 }

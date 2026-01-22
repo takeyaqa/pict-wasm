@@ -3,7 +3,7 @@ import {
   PictOutput,
   PictOptions,
   PictSubModel,
-} from "./types.js";
+} from "./types.mjs";
 // @ts-expect-error: Module has no types
 import createModule, { MainModule } from "../dist/pict.mjs";
 
