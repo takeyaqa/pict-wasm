@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { PictRunner } from "../dist/index.js";
+import { PictRunner } from "../dist/index.mjs";
 
 describe("PictRunner", () => {
   describe("initialize", () => {
