@@ -2,18 +2,10 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { PictRunner } from "../dist/index.mjs";
 
 describe("PictRunner", () => {
-  describe("initialize", () => {
-    it("should initialize without errors", async () => {
-      const pictRunner = new PictRunner();
+  describe("create", () => {
+    it("should create instance without errors", async () => {
+      const pictRunner = await PictRunner.create();
       expect(pictRunner).toBeInstanceOf(PictRunner);
-      await pictRunner.init();
-    });
-
-    it("should throw error if run is called before init", () => {
-      const pictRunner = new PictRunner();
-      expect(() => {
-        pictRunner.run([]);
-      }).toThrowError("PictRunner not initialized");
     });
   });
 
@@ -21,8 +13,7 @@ describe("PictRunner", () => {
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run without errors when parameters are ascii", () => {
@@ -37,7 +28,7 @@ describe("PictRunner", () => {
         },
         { name: "Compression", values: "ON, OFF" },
       ]);
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "Type",
         "Size",
         "Format method",
@@ -45,8 +36,8 @@ describe("PictRunner", () => {
         "Cluster size",
         "Compression",
       ]);
-      expect(output.body.length).toEqual(56);
-      expect(output.body[0]).toEqual([
+      expect(output.result.body.length).toEqual(56);
+      expect(output.result.body[0]).toEqual([
         "Span",
         "5000",
         "Slow",
@@ -54,7 +45,7 @@ describe("PictRunner", () => {
         "16384",
         "OFF",
       ]);
-      expect(output.body[27]).toEqual([
+      expect(output.result.body[27]).toEqual([
         "Single",
         "100",
         "Quick",
@@ -62,7 +53,7 @@ describe("PictRunner", () => {
         "512",
         "OFF",
       ]);
-      expect(output.body[55]).toEqual([
+      expect(output.result.body[55]).toEqual([
         "Mirror",
         "5000",
         "Slow",
@@ -99,29 +90,29 @@ Compression: ON, OFF`);
           values: "مرحبًا, בְּרֵאשִׁית",
         },
       ]);
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "null",
         "⅛⅜⅝⅞",
         "社會科學院語學研究所",
         "╯°□°）╯︵ ┻━┻",
         "script alert0 /script",
       ]);
-      expect(output.body.length).toEqual(18);
-      expect(output.body[0]).toEqual([
+      expect(output.result.body.length).toEqual(18);
+      expect(output.result.body[0]).toEqual([
         "false",
         "¡™£¢∞§¶•ªº–≠",
         "캄사함니다",
         "🇺🇸🇷🇺🇸🇦",
         "مرحبًا",
       ]);
-      expect(output.body[8]).toEqual([
+      expect(output.result.body[8]).toEqual([
         "NaN",
         "٠١٢٣٤٥٦٧٨٩",
         "表ポあA鷗ŒéＢ逍Üßªąñ丂㐀𠀀",
         "🇺🇸🇷🇺🇸🇦",
         "مرحبًا",
       ]);
-      expect(output.body[17]).toEqual([
+      expect(output.result.body[17]).toEqual([
         "false",
         "٠١٢٣٤٥٦٧٨٩",
         "캄사함니다",
@@ -142,8 +133,7 @@ script alert0 /script: مرحبًا, בְּרֵאשִׁית`);
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run without errors when parameters are ascii", () => {
@@ -164,7 +154,7 @@ script alert0 /script: مرحبًا, בְּרֵאשִׁית`);
 IF [File system] = "FAT32" THEN [Size] <= 32000;`,
         },
       );
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "Type",
         "Size",
         "Format method",
@@ -172,8 +162,8 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
         "Cluster size",
         "Compression",
       ]);
-      expect(output.body.length).toEqual(56);
-      expect(output.body[0]).toEqual([
+      expect(output.result.body.length).toEqual(56);
+      expect(output.result.body[0]).toEqual([
         "Stripe",
         "5000",
         "Quick",
@@ -181,7 +171,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
         "16384",
         "OFF",
       ]);
-      expect(output.body[27]).toEqual([
+      expect(output.result.body[27]).toEqual([
         "Mirror",
         "10000",
         "Slow",
@@ -189,7 +179,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
         "16384",
         "ON",
       ]);
-      expect(output.body[55]).toEqual([
+      expect(output.result.body[55]).toEqual([
         "Mirror",
         "100",
         "Quick",
@@ -214,8 +204,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run with order when combinations are 3", () => {
@@ -233,7 +222,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
         ],
         { options: { orderOfCombinations: 3 } },
       );
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "Type",
         "Size",
         "Format method",
@@ -241,8 +230,8 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
         "Cluster size",
         "Compression",
       ]);
-      expect(output.body.length).toEqual(281);
-      expect(output.body[0]).toEqual([
+      expect(output.result.body.length).toEqual(281);
+      expect(output.result.body[0]).toEqual([
         "RAID-5",
         "10",
         "Slow",
@@ -250,7 +239,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
         "1024",
         "OFF",
       ]);
-      expect(output.body[140]).toEqual([
+      expect(output.result.body[140]).toEqual([
         "RAID-5",
         "1000",
         "Quick",
@@ -258,7 +247,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
         "1024",
         "OFF",
       ]);
-      expect(output.body[280]).toEqual([
+      expect(output.result.body[280]).toEqual([
         "RAID-5",
         "10000",
         "Slow",
@@ -290,7 +279,7 @@ Compression: ON, OFF`);
         ],
         { options: { randomizeGeneration: true } },
       );
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "Type",
         "Size",
         "Format method",
@@ -298,7 +287,7 @@ Compression: ON, OFF`);
         "Cluster size",
         "Compression",
       ]);
-      expect(output.body.length).toBeOneOf([55, 56, 57]); // slight variation due to randomness
+      expect(output.result.body.length).toBeOneOf([55, 56, 57]); // slight variation due to randomness
       expect(output.modelFile).toBe(`Type: Single, Span, Stripe, Mirror, RAID-5
 Size: 10, 100, 500, 1000, 5000, 10000, 40000
 Format method: Quick, Slow
@@ -328,7 +317,7 @@ Compression: ON, OFF`);
           },
         },
       );
-      expect(output.header).toEqual([
+      expect(output.result.header).toEqual([
         "Type",
         "Size",
         "Format method",
@@ -336,8 +325,8 @@ Compression: ON, OFF`);
         "Cluster size",
         "Compression",
       ]);
-      expect(output.body.length).toEqual(56);
-      expect(output.body[0]).toEqual([
+      expect(output.result.body.length).toEqual(56);
+      expect(output.result.body[0]).toEqual([
         "Span",
         "5000",
         "Slow",
@@ -345,7 +334,7 @@ Compression: ON, OFF`);
         "16384",
         "OFF",
       ]);
-      expect(output.body[27]).toEqual([
+      expect(output.result.body[27]).toEqual([
         "Single",
         "100",
         "Quick",
@@ -353,7 +342,7 @@ Compression: ON, OFF`);
         "512",
         "OFF",
       ]);
-      expect(output.body[55]).toEqual([
+      expect(output.result.body[55]).toEqual([
         "Mirror",
         "5000",
         "Slow",

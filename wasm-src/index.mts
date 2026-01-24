@@ -6,23 +6,110 @@ import type {
 } from "./types.mjs";
 import createModule, { type MainModule } from "../dist/pict.mjs";
 
+/**
+ * A runner class for executing PICT (Pairwise Independent Combinatorial Testing)
+ * via WebAssembly.
+ *
+ * This class provides a JavaScript/TypeScript interface to the PICT combinatorial
+ * test case generation tool. It works in both Node.js and browser environments.
+ *
+ * @example
+ * ```typescript
+ * // Create a PictRunner instance
+ * const runner = await PictRunner.create();
+ *
+ * // Define parameters and run PICT
+ * const output = runner.run([
+ *   { name: "Type", values: "Single, Span, Stripe, Mirror, RAID-5" },
+ *   { name: "Size", values: "10, 100, 500, 1000" },
+ *   { name: "Format method", values: "Quick, Slow" },
+ * ]);
+ *
+ * console.log(output.result.header); // ["Type", "Size", "Format method"]
+ * console.log(output.result.body);   // Array of test cases
+ * ```
+ */
 export class PictRunner {
-  private pict: MainModule | null = null;
+  private pict: MainModule;
   private stdoutCapture: OutputCapture;
   private stderrCapture: OutputCapture;
 
-  constructor() {
-    this.stdoutCapture = new OutputCapture();
-    this.stderrCapture = new OutputCapture();
+  private constructor(
+    pict: MainModule,
+    stdoutCapture: OutputCapture,
+    stderrCapture: OutputCapture,
+  ) {
+    this.pict = pict;
+    this.stdoutCapture = stdoutCapture;
+    this.stderrCapture = stderrCapture;
   }
 
-  public async init(): Promise<void> {
-    this.pict = await createModule({
-      print: this.stdoutCapture.capture,
-      printErr: this.stderrCapture.capture,
+  /**
+   * Creates a new PictRunner instance by initializing the WebAssembly module.
+   *
+   * This is an async factory method that must be used instead of a constructor
+   * because WebAssembly module initialization is asynchronous.
+   *
+   * @returns A promise that resolves to a new PictRunner instance ready for use.
+   *
+   * @example
+   * ```typescript
+   * const runner = await PictRunner.create();
+   * ```
+   */
+  public static async create(): Promise<PictRunner> {
+    const stdoutCapture = new OutputCapture();
+    const stderrCapture = new OutputCapture();
+    const pict = await createModule({
+      print: stdoutCapture.capture,
+      printErr: stderrCapture.capture,
     });
+    return new PictRunner(pict, stdoutCapture, stderrCapture);
   }
 
+  /**
+   * Executes PICT with the given parameters and options to generate test cases.
+   *
+   * @param parameters - An array of parameter definitions, each containing a name
+   *   and comma-separated values.
+   * @param options - Optional configuration object containing:
+   *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
+   *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
+   *   - `options`: Generation options such as order of combinations and randomization settings.
+   * @returns The output containing generated test cases, the model file content, and any messages.
+   *
+   * @example
+   * ```typescript
+   * // Basic usage
+   * const output = runner.run([
+   *   { name: "OS", values: "Windows, Linux, macOS" },
+   *   { name: "Browser", values: "Chrome, Firefox, Safari" },
+   * ]);
+   *
+   * // With constraints
+   * const output = runner.run(
+   *   [
+   *     { name: "OS", values: "Windows, Linux, macOS" },
+   *     { name: "Browser", values: "Chrome, Firefox, Safari, Edge" },
+   *   ],
+   *   {
+   *     constraintsText: 'IF [OS] = "macOS" THEN [Browser] <> "Edge";',
+   *   }
+   * );
+   *
+   * // With options for 3-wise combinations and randomization
+   * const output = runner.run(
+   *   parameters,
+   *   {
+   *     options: {
+   *       orderOfCombinations: 3,
+   *       randomizeGeneration: true,
+   *       randomizeSeed: 42,
+   *     },
+   *   }
+   * );
+   * ```
+   */
   public run(
     parameters: PictParameter[],
     {
@@ -35,9 +122,6 @@ export class PictRunner {
       options?: PictOptions;
     } = {},
   ): PictOutput {
-    if (!this.pict) {
-      throw new Error("PictRunner not initialized");
-    }
     // Build the model
     const parametersText = parameters
       .map((m) => `${m.name}: ${m.values}`)
@@ -81,8 +165,10 @@ export class PictRunner {
       .split("\n")
       .map((m) => m.split("\t"));
     return {
-      header: out[0],
-      body: out.slice(1),
+      result: {
+        header: out[0],
+        body: out.slice(1),
+      },
       modelFile: model,
       message: err,
     };
