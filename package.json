@@ -38,7 +38,7 @@
     "fmt:check": "prettier --check .",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --project tsconfig.typecheck.json",
     "test": "vitest",
     "test:run": "vitest run"
   },
