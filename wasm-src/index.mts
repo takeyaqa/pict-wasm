@@ -86,8 +86,10 @@ export class PictRunner {
       .split("\n")
       .map((m) => m.split("\t"));
     return {
-      header: out[0],
-      body: out.slice(1),
+      result: {
+        header: out[0],
+        body: out.slice(1),
+      },
       modelFile: model,
       message: err,
     };

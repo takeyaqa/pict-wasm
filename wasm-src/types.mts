@@ -8,9 +8,13 @@ export interface PictSubModel {
   order: number;
 }
 
-export interface PictOutput {
+export interface PictResult {
   header: string[];
   body: string[][];
+}
+
+export interface PictOutput {
+  result: PictResult;
   modelFile: string;
   message?: string;
 }
