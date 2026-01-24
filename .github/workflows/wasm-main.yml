@@ -32,7 +32,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Emscripten SDK
+        run: bash install_emsdk.sh
       - run: pnpm install
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
       - run: pnpm run lint
   typecheck:
     runs-on: ubuntu-latest
@@ -45,7 +54,16 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Emscripten SDK
+        run: bash install_emsdk.sh
       - run: pnpm install
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
       - run: pnpm run typecheck
   build-and-test-wasm:
     runs-on: ubuntu-latest

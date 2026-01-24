@@ -1,11 +1,10 @@
-import {
+import type {
   PictParameter,
   PictOutput,
   PictOptions,
   PictSubModel,
 } from "./types.mjs";
-// @ts-expect-error: Module has no types
-import createModule, { MainModule } from "../dist/pict.mjs";
+import createModule, { type MainModule } from "../dist/pict.mjs";
 
 export class PictRunner {
   private pict: MainModule | null = null;
@@ -73,6 +72,7 @@ export class PictRunner {
         }
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
     this.pict.callMain(["model.txt", ...switches]);
     this.pict.FS.unlink("model.txt");
     const err = this.stderrCapture.getOuts();
