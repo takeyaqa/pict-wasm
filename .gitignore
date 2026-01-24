@@ -21,6 +21,7 @@ pict
 *.o
 .DS_Store
 build
+.vscode/settings.json
 
 # WebAssembly
 /.emsdk
