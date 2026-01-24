@@ -72,7 +72,7 @@ export class PictRunner {
         }
       }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
     this.pict.callMain(["model.txt", ...switches]);
     this.pict.FS.unlink("model.txt");
     const err = this.stderrCapture.getOuts();
