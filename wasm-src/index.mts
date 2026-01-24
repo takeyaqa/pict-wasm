@@ -72,6 +72,7 @@ export class PictRunner {
         }
       }
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     this.pict.callMain(["model.txt", ...switches]);
     this.pict.FS.unlink("model.txt");
     const err = this.stderrCapture.getOuts();

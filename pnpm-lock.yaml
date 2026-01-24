@@ -20,15 +20,15 @@ importers:
       '@vitest/browser-playwright':
         specifier: ^4.0.16
         version: 4.0.17(playwright@1.57.0)(vite@7.3.1)(vitest@4.0.17)
+      '@vitest/eslint-plugin':
+        specifier: ^1.6.6
+        version: 1.6.6(eslint@9.39.2)(typescript@5.9.3)(vitest@4.0.17)
       eslint:
         specifier: ^9.39.2
         version: 9.39.2
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.2)
-      globals:
-        specifier: ^17.0.0
-        version: 17.0.0
       playwright:
         specifier: ^1.57.0
         version: 1.57.0
@@ -492,6 +492,19 @@ packages:
     peerDependencies:
       vitest: 4.0.17
 
+  '@vitest/eslint-plugin@1.6.6':
+    resolution: {integrity: sha512-bwgQxQWRtnTVzsUHK824tBmHzjV0iTx3tZaiQIYDjX3SA7TsQS8CuDVqxXrRY3FaOUMgbGavesCxI9MOfFLm7Q==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      eslint: '>=8.57.0'
+      typescript: '>=5.0.0'
+      vitest: '*'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      vitest:
+        optional: true
+
   '@vitest/expect@4.0.17':
     resolution: {integrity: sha512-mEoqP3RqhKlbmUmntNDDCJeTDavDR+fVYkSOw8qRwJFaW/0/5zA9zFeTrHqNtcmwh6j26yMmwx2PqUDPzt5ZAQ==}
 
@@ -708,10 +721,6 @@ packages:
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
-    engines: {node: '>=18'}
-
-  globals@17.0.0:
-    resolution: {integrity: sha512-gv5BeD2EssA793rlFWVPMMCqefTlpusw6/2TbAVMy0FzcG8wKJn4O+NqJ4+XWmmwrayJgw5TzrmWjFgmz1XPqw==}
     engines: {node: '>=18'}
 
   has-flag@4.0.0:
@@ -1418,6 +1427,17 @@ snapshots:
       - utf-8-validate
       - vite
 
+  '@vitest/eslint-plugin@1.6.6(eslint@9.39.2)(typescript@5.9.3)(vitest@4.0.17)':
+    dependencies:
+      '@typescript-eslint/scope-manager': 8.53.0
+      '@typescript-eslint/utils': 8.53.0(eslint@9.39.2)(typescript@5.9.3)
+      eslint: 9.39.2
+    optionalDependencies:
+      typescript: 5.9.3
+      vitest: 4.0.17(@vitest/browser-playwright@4.0.17)
+    transitivePeerDependencies:
+      - supports-color
+
   '@vitest/expect@4.0.17':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -1664,8 +1684,6 @@ snapshots:
       is-glob: 4.0.3
 
   globals@14.0.0: {}
-
-  globals@17.0.0: {}
 
   has-flag@4.0.0: {}
 
