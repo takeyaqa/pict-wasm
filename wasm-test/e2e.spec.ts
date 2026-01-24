@@ -2,18 +2,10 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { PictRunner } from "../dist/index.mjs";
 
 describe("PictRunner", () => {
-  describe("initialize", () => {
-    it("should initialize without errors", async () => {
-      const pictRunner = new PictRunner();
+  describe("create", () => {
+    it("should create instance without errors", async () => {
+      const pictRunner = await PictRunner.create();
       expect(pictRunner).toBeInstanceOf(PictRunner);
-      await pictRunner.init();
-    });
-
-    it("should throw error if run is called before init", () => {
-      const pictRunner = new PictRunner();
-      expect(() => {
-        pictRunner.run([]);
-      }).toThrowError("PictRunner not initialized");
     });
   });
 
@@ -21,8 +13,7 @@ describe("PictRunner", () => {
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run without errors when parameters are ascii", () => {
@@ -142,8 +133,7 @@ script alert0 /script: مرحبًا, בְּרֵאשִׁית`);
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run without errors when parameters are ascii", () => {
@@ -214,8 +204,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
     let pictRunner: PictRunner;
 
     beforeEach(async () => {
-      pictRunner = new PictRunner();
-      await pictRunner.init();
+      pictRunner = await PictRunner.create();
     });
 
     it("should run with order when combinations are 3", () => {

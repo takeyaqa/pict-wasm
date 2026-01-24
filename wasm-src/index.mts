@@ -7,20 +7,28 @@ import type {
 import createModule, { type MainModule } from "../dist/pict.mjs";
 
 export class PictRunner {
-  private pict: MainModule | null = null;
+  private pict: MainModule;
   private stdoutCapture: OutputCapture;
   private stderrCapture: OutputCapture;
 
-  constructor() {
-    this.stdoutCapture = new OutputCapture();
-    this.stderrCapture = new OutputCapture();
+  private constructor(
+    pict: MainModule,
+    stdoutCapture: OutputCapture,
+    stderrCapture: OutputCapture,
+  ) {
+    this.pict = pict;
+    this.stdoutCapture = stdoutCapture;
+    this.stderrCapture = stderrCapture;
   }
 
-  public async init(): Promise<void> {
-    this.pict = await createModule({
-      print: this.stdoutCapture.capture,
-      printErr: this.stderrCapture.capture,
+  public static async create(): Promise<PictRunner> {
+    const stdoutCapture = new OutputCapture();
+    const stderrCapture = new OutputCapture();
+    const pict = await createModule({
+      print: stdoutCapture.capture,
+      printErr: stderrCapture.capture,
     });
+    return new PictRunner(pict, stdoutCapture, stderrCapture);
   }
 
   public run(
@@ -35,9 +43,6 @@ export class PictRunner {
       options?: PictOptions;
     } = {},
   ): PictOutput {
-    if (!this.pict) {
-      throw new Error("PictRunner not initialized");
-    }
     // Build the model
     const parametersText = parameters
       .map((m) => `${m.name}: ${m.values}`)
