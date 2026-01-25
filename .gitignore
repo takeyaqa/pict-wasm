@@ -22,9 +22,3 @@ pict
 .DS_Store
 build
 .vscode/settings.json
-
-# WebAssembly
-/.emsdk
-/dist
-/node_modules
-/wasm-work
