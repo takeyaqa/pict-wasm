@@ -1,6 +1,5 @@
 #include <fstream>
 #include <sstream>
-#include <locale>
 #include "model.h"
 using namespace std;
 
@@ -443,8 +442,6 @@ bool CModelData::readModel( const wstring& filePath )
         PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
         return( false );
     }
-    // Use the current global locale (set to UTF-8 in main) for decoding
-    file.imbue( std::locale() );
 
     wstring line;
 
@@ -546,8 +543,6 @@ bool CModelData::ReadRowSeedFile( const wstring& filePath )
         PrintMessage( InputDataError, L"Couldn't open file:", filePath.data() );
         return( false );
     }
-    // Use the current global locale (set to UTF-8 in main) for decoding
-    file.imbue( std::locale() );
     wstring line;
 
     // parameter names
