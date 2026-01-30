@@ -17,9 +17,9 @@
     "url": "https://github.com/takeyaqa/pict-wasm/issues"
   },
   "license": "MIT",
+  "author": "Takeshi Kishi",
   "contributors": [
-    "Microsoft Corporation",
-    "Takeshi Kishi"
+    "Microsoft Corporation"
   ],
   "files": [
     "dist"
