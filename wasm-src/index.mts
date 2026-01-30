@@ -4,7 +4,19 @@ import type {
   PictOptions,
   PictSubModel,
 } from "./types.mjs";
+import { createPictError, PictErrorCode } from "./errors.mjs";
 import createModule, { type MainModule } from "../dist/pict.mjs";
+
+// Re-export error classes for consumers
+export {
+  PictErrorCode,
+  PictError,
+  PictBadOptionError,
+  PictBadModelError,
+  PictBadConstraintsError,
+  PictBadRowSeedFileError,
+  PictGenerationError,
+} from "./errors.mjs";
 
 /**
  * A runner class for executing PICT (Pairwise Independent Combinatorial Testing)
@@ -77,6 +89,11 @@ export class PictRunner {
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
    *   - `options`: Generation options such as order of combinations and randomization settings.
    * @returns The output containing generated test cases, the model file content, and any messages.
+   * @throws {PictBadOptionError} When an invalid option is provided.
+   * @throws {PictBadModelError} When the model definition is invalid.
+   * @throws {PictBadConstraintsError} When constraint definitions are invalid.
+   * @throws {PictBadRowSeedFileError} When the row seed file is invalid.
+   * @throws {PictGenerationError} When test case generation fails.
    *
    * @example
    * ```typescript
@@ -108,6 +125,15 @@ export class PictRunner {
    *     },
    *   }
    * );
+   *
+   * // Error handling
+   * try {
+   *   const output = runner.run(parameters, { constraintsText: 'invalid constraint' });
+   * } catch (error) {
+   *   if (error instanceof PictBadConstraintsError) {
+   *     console.error("Constraint error:", error.message);
+   *   }
+   * }
    * ```
    */
   public run(
@@ -156,18 +182,26 @@ export class PictRunner {
         }
       }
     }
+
+    // Execute PICT and capture the return code
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
-    this.pict.callMain(["model.txt", ...switches]);
+    const returnCode = this.pict.callMain(["model.txt", ...switches]) as number;
     this.pict.FS.unlink("model.txt");
+
     const err = this.stderrCapture.getOuts();
-    const out = this.stdoutCapture
-      .getOuts()
-      .split("\n")
-      .map((m) => m.split("\t"));
+    const out = this.stdoutCapture.getOuts();
+
+    // Check for errors
+    if (returnCode !== PictErrorCode.Success) {
+      throw createPictError(returnCode, model, err);
+    }
+
+    // Parse the output
+    const lines = out.split("\n").map((m) => m.split("\t"));
     return {
       result: {
-        header: out[0],
-        body: out.slice(1),
+        header: lines[0],
+        body: lines.slice(1),
       },
       modelFile: model,
       message: err,

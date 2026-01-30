@@ -103,3 +103,15 @@ export interface PictOptions {
    */
   randomizeSeed?: number;
 }
+
+// Re-export error types for convenience
+export type { PictErrorCode } from "./errors.mjs";
+
+export {
+  PictError,
+  PictBadOptionError,
+  PictBadModelError,
+  PictBadConstraintsError,
+  PictBadRowSeedFileError,
+  PictGenerationError,
+} from "./errors.mjs";
