@@ -1,5 +1,10 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { PictRunner } from "../dist/index.mjs";
+import {
+  PictRunner,
+  PictError,
+  PictBadModelError,
+  PictBadConstraintsError,
+} from "../dist/index.mjs";
 
 describe("PictRunner", () => {
   describe("create", () => {
@@ -357,6 +362,113 @@ File system: FAT, FAT32, NTFS
 Cluster size: 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 Compression: ON, OFF`);
       expect(output.message).toBe("Used seed: 0");
+    });
+  });
+
+  describe("error handling", () => {
+    let pictRunner: PictRunner;
+
+    beforeEach(async () => {
+      pictRunner = await PictRunner.create();
+    });
+
+    describe("PictBadModelError", () => {
+      it("should throw PictBadModelError when order is larger than number of parameters", () => {
+        expect(() => {
+          pictRunner.run(
+            [
+              { name: "A", values: "1, 2" },
+              { name: "B", values: "x, y" },
+            ],
+            { options: { orderOfCombinations: 10 } },
+          );
+        }).toThrow(PictBadModelError);
+      });
+    });
+
+    describe("PictBadConstraintsError", () => {
+      it("should throw PictBadConstraintsError when constraint syntax is invalid", () => {
+        expect(() => {
+          pictRunner.run(
+            [
+              { name: "OS", values: "Windows, Linux" },
+              { name: "Browser", values: "Chrome, Firefox" },
+            ],
+            {
+              constraintsText: 'IF [OS] = "Windows" THEN;', // Missing term after THEN
+            },
+          );
+        }).toThrow(PictBadConstraintsError);
+      });
+
+      it("should throw PictBadConstraintsError when constraint has missing closing bracket", () => {
+        expect(() => {
+          pictRunner.run(
+            [
+              { name: "OS", values: "Windows, Linux" },
+              { name: "Browser", values: "Chrome, Firefox" },
+            ],
+            {
+              constraintsText: 'IF [OS = "Windows" THEN [Browser] = "Chrome";',
+            },
+          );
+        }).toThrow(PictBadConstraintsError);
+      });
+
+      it("should throw PictBadConstraintsError when constraint has type mismatch", () => {
+        expect(() => {
+          pictRunner.run(
+            [
+              { name: "Size", values: "10, 20, 30" },
+              { name: "Name", values: "A, B, C" },
+            ],
+            {
+              constraintsText: 'IF [Size] = "text" THEN [Name] = "A";', // Size is numeric, comparing with string
+            },
+          );
+        }).toThrow(PictBadConstraintsError);
+      });
+    });
+
+    describe("error inheritance", () => {
+      it("should allow catching all PICT errors with base PictError class", () => {
+        let caughtError: PictError | undefined;
+        try {
+          pictRunner.run(
+            [
+              { name: "A", values: "1, 2" },
+              { name: "B", values: "x, y" },
+            ],
+            { options: { orderOfCombinations: 10 } },
+          );
+        } catch (error) {
+          caughtError = error as PictError;
+        }
+        expect(caughtError).toBeDefined();
+        expect(caughtError).toBeInstanceOf(PictError);
+      });
+
+      it("should include modelFile in error for debugging", () => {
+        let thrownError: PictError | undefined;
+        try {
+          pictRunner.run(
+            [
+              { name: "A", values: "1, 2" },
+              { name: "B", values: "x, y" },
+            ],
+            {
+              constraintsText: "invalid constraint syntax",
+            },
+          );
+        } catch (error) {
+          thrownError = error as PictError;
+        }
+        expect(thrownError).toBeDefined();
+        expect(thrownError).toBeInstanceOf(PictError);
+        expect(thrownError?.modelFile).toContain("A: 1, 2");
+        expect(thrownError?.modelFile).toContain("B: x, y");
+        expect(thrownError?.modelFile).toContain("invalid constraint syntax");
+      });
     });
   });
 });
