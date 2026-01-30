@@ -22,6 +22,3 @@ export {
   PictBadRowSeedFileError,
   PictGenerationError,
 } from "./errors.mjs";
-
-// Re-export error code type
-export type { PictErrorCode as PictErrorCodeType } from "./errors.mjs";
