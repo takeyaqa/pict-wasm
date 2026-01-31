@@ -31,7 +31,7 @@ This project wraps Microsoft's C++ PICT tool as a WebAssembly module with a Type
 ### Two Build Systems
 
 1. **Emscripten (WASM)** - Compiles C++ to WebAssembly via `make wasm`. Uses `em++` with specific flags in `Makefile`.
-2. **TypeScript** - Compiles `wasm-src/*.mts` to `dist/` via `tsc`.
+2. **TypeScript** - Compiles `wasm-src/*.ts` to `dist/` via `tsc`.
 
 ### Directory Structure
 
@@ -49,7 +49,6 @@ This project wraps Microsoft's C++ PICT tool as a WebAssembly module with a Type
 
 ## Key Conventions
 
-- **ES Modules only** - All TypeScript uses `.mts` extension, output is `.mjs`
 - **Node 22+**: Required runtime version
 - **pnpm 10**: Required package manager
 - **Strict TypeScript** - `tseslint/strictTypeChecked` for source, `tseslint/recommended` for tests

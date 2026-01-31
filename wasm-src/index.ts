@@ -1,7 +1,7 @@
 // Barrel file - aggregates all public exports
 
 // Main runner class
-export { PictRunner } from "./runner.mjs";
+export { PictRunner } from "./runner.js";
 
 // Types
 export type {
@@ -10,7 +10,7 @@ export type {
   PictResult,
   PictOutput,
   PictOptions,
-} from "./types.mjs";
+} from "./types.js";
 
 // Error classes and codes
 export {
@@ -21,4 +21,4 @@ export {
   PictBadConstraintsError,
   PictBadRowSeedFileError,
   PictGenerationError,
-} from "./errors.mjs";
+} from "./errors.js";

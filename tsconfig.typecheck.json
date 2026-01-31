@@ -6,5 +6,5 @@
   "compilerOptions": {
     "noEmit": true
   },
-  "include": ["wasm-src/**/*.mts", "wasm-test/**/*.ts"]
+  "include": ["wasm-src/**/*.ts", "wasm-test/**/*.ts"]
 }
