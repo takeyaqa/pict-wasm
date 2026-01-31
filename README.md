@@ -1,10 +1,56 @@
 # @takeyaqa/pict-wasm
 
-Unofficial WebAssembly build of [Microsoft PICT](https://github.com/microsoft/pict).  
+Unofficial WebAssembly build of [Microsoft PICT](https://github.com/microsoft/pict).
 This package works in both **Node.js** and **browsers**.
 
+## Installation
+
+```bash
+npm install @takeyaqa/pict-wasm
+```
+
+## Usage
+
+### Example
+
+```typescript
+import { PictRunner } from '@takeyaqa/pict-wasm';
+
+async function runPict() {
+  const pictRunner = await PictRunner.create();
+  const output = pictRunner.run([
+    { name: "Type", values: "Single, Span, Stripe, Mirror, RAID-5" },
+    { name: "Size", values: "10, 100, 500, 1000, 5000, 10000, 40000" },
+    { name: "Format method", values: "Quick, Slow" },
+    { name: "File system", values: "FAT, FAT32, NTFS" },
+    { name: "Cluster size", values: "512, 1024, 2048, 4096, 8192, 16384, 32768" },
+    { name: "Compression", values: "ON, OFF" },
+  ]);
+  console.log(result); // If you are in a browser, you'd likely display this in the DOM
+}
+
+runPict();
+```
+
+## Build and Test
+
+```bash
+# Set up Emscripten SDK (required for first-time setup)
+./install_emsdk.sh
+source .emsdk/emsdk_env.sh
+
+# Install dependencies
+pnpm install
+
+# Build WASM and TypeScript
+pnpm run build
+
+# Run all tests
+pnpm run test:run
+```
+
 > [!IMPORTANT]
-> This is an independent project, not affiliated with Microsoft.  
+> This is an independent project, not affiliated with Microsoft.
 > Original PICT is licensed under the MIT License.
 
 Pairwise Independent Combinatorial Testing
