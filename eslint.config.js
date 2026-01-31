@@ -7,7 +7,7 @@ import { defineConfig, globalIgnores } from "eslint/config";
 export default defineConfig([
   globalIgnores([".emsdk", "dist"]),
   {
-    files: ["wasm-src/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    files: ["wasm-src/**/*.ts"],
     plugins: { js, tseslint },
     extends: [
       "js/recommended",
@@ -21,7 +21,7 @@ export default defineConfig([
     },
   },
   {
-    files: ["wasm-test/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    files: ["wasm-test/**/*.spec.ts"],
     plugins: { js, tseslint, vitest },
     extends: ["js/recommended", "tseslint/recommended", "vitest/recommended"],
   },
