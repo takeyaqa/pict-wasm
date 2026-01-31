@@ -3,33 +3,152 @@
 Unofficial WebAssembly build of [Microsoft PICT](https://github.com/microsoft/pict).
 This package works in both **Node.js** and **browsers**.
 
+> [!IMPORTANT]
+> This is an independent project and is not affiliated with Microsoft.
+> The original PICT is licensed under the MIT License.
+
 ## Installation
 
 ```bash
 npm install @takeyaqa/pict-wasm
 ```
 
+## Requirements
+
+- Node.js 22 or later
+- Modern browsers with WebAssembly support (Chromium, Firefox, WebKit)
+
 ## Usage
 
-### Example
+### Basic Example
 
 ```typescript
-import { PictRunner } from '@takeyaqa/pict-wasm';
+import { PictRunner } from "@takeyaqa/pict-wasm";
 
-async function runPict() {
-  const pictRunner = await PictRunner.create();
-  const output = pictRunner.run([
+const runner = await PictRunner.create();
+const output = runner.run([
+  { name: "Type", values: "Single, Span, Stripe, Mirror, RAID-5" },
+  { name: "Size", values: "10, 100, 500, 1000, 5000, 10000, 40000" },
+  { name: "Format method", values: "Quick, Slow" },
+  { name: "File system", values: "FAT, FAT32, NTFS" },
+  { name: "Cluster size", values: "512, 1024, 2048, 4096, 8192, 16384, 32768" },
+  { name: "Compression", values: "ON, OFF" },
+]);
+
+console.log(output.result.header); // ["Type", "Size", "Format method", ...]
+console.log(output.result.body); // [["Single", "10", "Quick", ...], ...]
+```
+
+### With Constraints
+
+```typescript
+const output = runner.run(
+  [
     { name: "Type", values: "Single, Span, Stripe, Mirror, RAID-5" },
-    { name: "Size", values: "10, 100, 500, 1000, 5000, 10000, 40000" },
-    { name: "Format method", values: "Quick, Slow" },
     { name: "File system", values: "FAT, FAT32, NTFS" },
-    { name: "Cluster size", values: "512, 1024, 2048, 4096, 8192, 16384, 32768" },
-    { name: "Compression", values: "ON, OFF" },
-  ]);
-  console.log(output); // If you are in a browser, you'd likely display this in the DOM
-}
+    { name: "Size", values: "10, 100, 500, 1000" },
+  ],
+  {
+    constraintsText: `IF [File system] = "FAT" THEN [Size] <= 4096;
+IF [File system] = "FAT32" THEN [Size] <= 32000;`,
+  },
+);
+```
 
-runPict();
+### With Options
+
+```typescript
+const output = runner.run(parameters, {
+  options: {
+    orderOfCombinations: 3, // Default: 2 (pairwise)
+    randomizeGeneration: true, // Randomize output order
+    randomizeSeed: 42, // For reproducible results
+  },
+});
+```
+
+## API Reference
+
+### `PictRunner.create(): Promise<PictRunner>`
+
+Creates a new `PictRunner` instance. This async factory method must be used instead of a constructor.
+
+### `runner.run(parameters, options?): PictOutput`
+
+Generates test cases from the given parameters.
+
+#### Parameters
+
+| Name                      | Type              | Description                                      |
+| ------------------------- | ----------------- | ------------------------------------------------ |
+| `parameters`              | `PictParameter[]` | Array of `{ name: string, values: string }`      |
+| `options.constraintsText` | `string`          | PICT constraint expressions                      |
+| `options.subModels`       | `PictSubModel[]`  | Sub-model definitions for mixed-strength testing |
+| `options.options`         | `PictOptions`     | Generation options (see below)                   |
+
+#### PictOptions
+
+| Option                | Type      | Default | Description                                        |
+| --------------------- | --------- | ------- | -------------------------------------------------- |
+| `orderOfCombinations` | `number`  | `2`     | Combination order (2 = pairwise, 3 = 3-wise, etc.) |
+| `randomizeGeneration` | `boolean` | `false` | Randomize test case order                          |
+| `randomizeSeed`       | `number`  | -       | Seed for reproducible randomization                |
+
+#### Return Value
+
+```typescript
+interface PictOutput {
+  result: {
+    header: string[]; // Parameter names
+    body: string[][]; // Generated test cases
+  };
+  modelFile: string; // Generated model file content
+  message?: string; // Additional output (e.g., random seed used)
+}
+```
+
+## Error Handling
+
+```typescript
+import {
+  PictRunner,
+  PictBadModelError,
+  PictBadConstraintsError,
+} from "@takeyaqa/pict-wasm";
+
+try {
+  const output = runner.run(parameters, options);
+} catch (error) {
+  if (error instanceof PictBadConstraintsError) {
+    console.error("Invalid constraints:", error.message);
+  } else if (error instanceof PictBadModelError) {
+    console.error("Invalid model:", error.message);
+  }
+}
+```
+
+### Error Classes
+
+| Class                     | Description                    |
+| ------------------------- | ------------------------------ |
+| `PictError`               | Base class for all PICT errors |
+| `PictBadModelError`       | Invalid model definition       |
+| `PictBadConstraintsError` | Invalid constraint syntax      |
+| `PictBadOptionError`      | Invalid option value           |
+| `PictGenerationError`     | Test generation failure        |
+
+## TypeScript Support
+
+This package includes TypeScript type definitions. All types are exported:
+
+```typescript
+import type {
+  PictParameter,
+  PictSubModel,
+  PictOptions,
+  PictResult,
+  PictOutput,
+} from "@takeyaqa/pict-wasm";
 ```
 
 ## Build and Test
@@ -48,10 +167,6 @@ pnpm run build
 # Run all tests
 pnpm run test:run
 ```
-
-> [!IMPORTANT]
-> This is an independent project, not affiliated with Microsoft.
-> Original PICT is licensed under the MIT License.
 
 Pairwise Independent Combinatorial Testing
 ==========================================
