@@ -26,7 +26,7 @@ async function runPict() {
     { name: "Cluster size", values: "512, 1024, 2048, 4096, 8192, 16384, 32768" },
     { name: "Compression", values: "ON, OFF" },
   ]);
-  console.log(result); // If you are in a browser, you'd likely display this in the DOM
+  console.log(output); // If you are in a browser, you'd likely display this in the DOM
 }
 
 runPict();
