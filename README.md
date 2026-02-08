@@ -158,8 +158,9 @@ import type {
 ./install_emsdk.sh
 source .emsdk/emsdk_env.sh
 
-# Install dependencies
+# Install dependencies and Playwright browsers
 pnpm install
+pnpm exec playwright install --with-deps
 
 # Build WASM and TypeScript
 pnpm run build

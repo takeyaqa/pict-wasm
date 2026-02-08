@@ -1,5 +1,7 @@
 # Agent Instructions for pict-wasm
 
+## Overview
+
 WebAssembly build of Microsoft PICT (Pairwise Independent Combinatorial Testing) that works in Node.js and browsers.
 
 ## Build and Test Commands
@@ -9,19 +11,20 @@ WebAssembly build of Microsoft PICT (Pairwise Independent Combinatorial Testing)
 ./install_emsdk.sh
 source .emsdk/emsdk_env.sh
 
-# Install dependencies
+# Install dependencies and Playwright browsers
 pnpm install
+pnpm exec playwright install --with-deps
 
 # Build WASM and TypeScript
 pnpm run build
-
-# Run all tests once (Node.js + browsers via Playwright)
-pnpm run test:run
 
 # Lint and format
 pnpm run fmt
 pnpm run lint
 pnpm run typecheck
+
+# Run all tests once (Node.js + browsers via Playwright)
+pnpm run test:run
 ```
 
 ## Architecture
