@@ -47,7 +47,9 @@
     "lint:fix": "eslint --fix .",
     "typecheck": "tsc --project tsconfig.typecheck.json",
     "test": "vitest",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "test:node": "vitest --project node",
+    "test:browser": "vitest --project browser"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -64,17 +66,17 @@
     "vitest": "^4.0.18"
   },
   "engines": {
-    "node": ">=22"
+    "node": "^22 || ^24"
   },
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=22 <23"
+      "version": "^22"
     },
     "packageManager": [
       {
         "name": "pnpm",
-        "version": ">=10 <11"
+        "version": "^10"
       }
     ]
   }
