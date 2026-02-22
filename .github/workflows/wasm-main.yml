@@ -35,7 +35,7 @@ jobs:
           source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
           pnpm run build
       - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dist
           path: dist/
