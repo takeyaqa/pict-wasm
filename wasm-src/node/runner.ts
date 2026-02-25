@@ -3,9 +3,9 @@ import type {
   PictOutput,
   PictOptions,
   PictSubModel,
-} from "./types.js";
-import { createPictError, PictErrorCode } from "./errors.js";
-import createModule, { type MainModule } from "../dist/pict.js";
+} from "../types.js";
+import { createPictError, PictErrorCode } from "../errors.js";
+import createModule, { type MainModule } from "../../dist/node/pict.js";
 
 /**
  * A runner class for executing PICT (Pairwise Independent Combinatorial Testing)

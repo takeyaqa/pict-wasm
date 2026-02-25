@@ -11,14 +11,20 @@ export default defineConfig({
       {
         test: {
           name: "node",
-          include: ["./wasm-test/**/*.spec.ts"],
+          include: [
+            "./wasm-test/node/*.spec.ts",
+            "./wasm-test/universal/*.spec.ts",
+          ],
           environment: "node",
         },
       },
       {
         test: {
           name: "browser",
-          include: ["./wasm-test/**/*.spec.ts"],
+          include: [
+            "./wasm-test/browser/*.spec.ts",
+            "./wasm-test/universal/*.spec.ts",
+          ],
           browser: {
             enabled: true,
             provider: playwright(),

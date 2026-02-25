@@ -27,7 +27,13 @@ EXXLINKFLAGS+=-sALLOW_MEMORY_GROWTH=1 -sMALLOC=emmalloc -sWASMFS=1 -sFORCE_FILES
 EXXLINKFLAGS+=-sMODULARIZE=1 -sEXPORT_NAME=createModule -sEXPORT_ES6=1 -sINVOKE_RUN=0
 EXXLINKFLAGS+=-sINCOMING_MODULE_JS_API=print,printErr
 EXXLINKFLAGS+=-sEXPORTED_RUNTIME_METHODS=callMain,FS
+ENV_UNIVERSAL=-sENVIRONMENT=web,webview,worker,node
+ENV_BROWSER=-sENVIRONMENT=web,webview,worker
+ENV_NODE=-sENVIRONMENT=node
 TARGET_WASM_DIR=dist
+TARGET_WASM_DIR_UNIVERSAL=$(TARGET_WASM_DIR)/universal
+TARGET_WASM_DIR_BROWSER=$(TARGET_WASM_DIR)/browser
+TARGET_WASM_DIR_NODE=$(TARGET_WASM_DIR)/node
 TARGET_JS=pict.js
 TARGET_TSD=pict.d.ts
 WASM_WORK_DIR=wasm-work
@@ -70,13 +76,23 @@ image-run:
 wasm-prepare:
 	mkdir -p $(WASM_WORK_DIR)/api
 	mkdir -p $(WASM_WORK_DIR)/cli
-	mkdir -p $(TARGET_WASM_DIR)
+	mkdir -p $(TARGET_WASM_DIR_UNIVERSAL)
+	mkdir -p $(TARGET_WASM_DIR_BROWSER)
+	mkdir -p $(TARGET_WASM_DIR_NODE)
 
 $(WASM_WORK_DIR)/%.o: %.cpp
 	$(EXX) $(EXXFLAGS) -c $(OUTPUT_OPTION) $<
 
-wasm: wasm-prepare $(WASM_OBJS)
-	$(EXX) $(WASM_OBJS) $(EXXLINKFLAGS) -o $(TARGET_WASM_DIR)/$(TARGET_JS)
+wasm-universal: wasm-prepare $(WASM_OBJS)
+	$(EXX) $(WASM_OBJS) $(EXXLINKFLAGS) $(ENV_UNIVERSAL) -o $(TARGET_WASM_DIR_UNIVERSAL)/$(TARGET_JS)
+
+wasm-browser: wasm-prepare $(WASM_OBJS)
+	$(EXX) $(WASM_OBJS) $(EXXLINKFLAGS) $(ENV_BROWSER) -o $(TARGET_WASM_DIR_BROWSER)/$(TARGET_JS)
+
+wasm-node: wasm-prepare $(WASM_OBJS)
+	$(EXX) $(WASM_OBJS) $(EXXLINKFLAGS) $(ENV_NODE) -o $(TARGET_WASM_DIR_NODE)/$(TARGET_JS)
+
+wasm: wasm-universal wasm-browser wasm-node
 
 wasm-clean:
 	rm -rf $(WASM_WORK_DIR)

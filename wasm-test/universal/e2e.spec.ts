@@ -4,7 +4,7 @@ import {
   PictError,
   PictBadModelError,
   PictBadConstraintsError,
-} from "../dist/index.js";
+} from "../../dist/universal/index.js";
 
 describe("PictRunner", () => {
   describe("create", () => {

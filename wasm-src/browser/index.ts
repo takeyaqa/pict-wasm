@@ -10,7 +10,7 @@ export type {
   PictResult,
   PictOutput,
   PictOptions,
-} from "./types.js";
+} from "../types.js";
 
 // Error classes and codes
 export {
@@ -21,4 +21,4 @@ export {
   PictBadConstraintsError,
   PictBadRowSeedFileError,
   PictGenerationError,
-} from "./errors.js";
+} from "../errors.js";
