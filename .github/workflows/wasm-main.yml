@@ -67,7 +67,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - name: Download dist artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
@@ -86,7 +86,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - name: Download dist artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
@@ -109,7 +109,7 @@ jobs:
           cache: pnpm
       - run: pnpm install
       - name: Download dist artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
@@ -135,7 +135,7 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Download dist artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
