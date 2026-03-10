@@ -119,3 +119,27 @@ export interface PictOptions {
    */
   negativeValuePrefix?: string;
 }
+
+/**
+ * Run-level options for {@link PictRunner.run}.
+ */
+export interface PictRunOptions {
+  /**
+   * Sub-model definitions for mixed-strength combinations.
+   */
+  subModels?: PictSubModel[];
+  /**
+   * PICT constraint expressions.
+   */
+  constraintsText?: string;
+  /**
+   * Seed rows in TSV format (header + rows), mapped to PICT CLI option `/e:file`.
+   *
+   * This string is written to an internal virtual file and passed to PICT.
+   */
+  seedRowsText?: string;
+  /**
+   * Generation options mapped to PICT CLI switches.
+   */
+  options?: PictOptions;
+}

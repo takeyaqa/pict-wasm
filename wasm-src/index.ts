@@ -10,6 +10,7 @@ export type {
   PictResult,
   PictOutput,
   PictOptions,
+  PictRunOptions,
 } from "./types.js";
 
 // Error classes and codes

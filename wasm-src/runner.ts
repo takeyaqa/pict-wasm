@@ -1,9 +1,4 @@
-import type {
-  PictParameter,
-  PictOutput,
-  PictOptions,
-  PictSubModel,
-} from "./types.js";
+import type { PictParameter, PictOutput, PictRunOptions } from "./types.js";
 import { createPictError, PictErrorCode } from "./errors.js";
 import createModule, { type MainModule } from "../dist/pict.js";
 
@@ -73,9 +68,10 @@ export class PictRunner {
    *
    * @param parameters - An array of parameter definitions, each containing a name
    *   and a separator-delimited value list.
-   * @param options - Optional configuration object containing:
+   * @param runOptions - Optional configuration object containing:
    *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
+   *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
    *   - `options`: Generation options such as order, randomization, and custom separators.
    * @returns The output containing generated test cases, the model file content, and any messages.
    * @throws {PictBadOptionError} When an invalid option is provided.
@@ -119,6 +115,17 @@ export class PictRunner {
    * );
    * // `orderOfCombinations` also supports "max" for exhaustive coverage.
    *
+   * // With seed rows (TSV format: header + rows)
+   * const output = runner.run(
+   *   [
+   *     { name: "A", values: "0, 1" },
+   *     { name: "B", values: "x, y" },
+   *   ],
+   *   {
+   *     seedRowsText: "A\tB\n0\tx",
+   *   }
+   * );
+   *
    * // Error handling
    * try {
    *   const output = runner.run(parameters, { constraintsText: 'invalid constraint' });
@@ -131,16 +138,12 @@ export class PictRunner {
    */
   public run(
     parameters: PictParameter[],
-    {
-      subModels,
-      constraintsText,
-      options,
-    }: {
-      subModels?: PictSubModel[];
-      constraintsText?: string;
-      options?: PictOptions;
-    } = {},
+    runOptions: PictRunOptions = {},
   ): PictOutput {
+    const { subModels, constraintsText, seedRowsText, options } = runOptions;
+    const modelFileName = "model.txt";
+    const seedRowsFileName = "seedrows.txt";
+
     // Build the model
     const parametersText = parameters
       .map((m) => `${m.name}: ${m.values}`)
@@ -159,55 +162,70 @@ export class PictRunner {
     if (constraintsText) {
       model = `${model}\n\n${constraintsText}`;
     }
-    this.pict.FS.writeFile("model.txt", model);
+    this.pict.FS.writeFile(modelFileName, model);
 
-    // Set the options
-    const switches: string[] = [];
-    if (options) {
-      if (options.orderOfCombinations !== undefined) {
-        switches.push(`/o:${options.orderOfCombinations.toString()}`);
+    let hasSeedRowsFile = false;
+    try {
+      // Set the options
+      const switches: string[] = [];
+      if (seedRowsText !== undefined) {
+        this.pict.FS.writeFile(seedRowsFileName, seedRowsText);
+        switches.push(`/e:${seedRowsFileName}`);
+        hasSeedRowsFile = true;
       }
-      if (options.valueSeparator !== undefined) {
-        switches.push(`/d:${options.valueSeparator}`);
-      }
-      if (options.aliasSeparator !== undefined) {
-        switches.push(`/a:${options.aliasSeparator}`);
-      }
-      if (options.negativeValuePrefix !== undefined) {
-        switches.push(`/n:${options.negativeValuePrefix}`);
-      }
-      if (options.randomizeGeneration) {
-        if (options.randomizeSeed === 0 || options.randomizeSeed) {
-          switches.push(`/r:${options.randomizeSeed.toString()}`);
-        } else {
-          switches.push("/r");
+      if (options) {
+        if (options.orderOfCombinations !== undefined) {
+          switches.push(`/o:${options.orderOfCombinations.toString()}`);
+        }
+        if (options.valueSeparator !== undefined) {
+          switches.push(`/d:${options.valueSeparator}`);
+        }
+        if (options.aliasSeparator !== undefined) {
+          switches.push(`/a:${options.aliasSeparator}`);
+        }
+        if (options.negativeValuePrefix !== undefined) {
+          switches.push(`/n:${options.negativeValuePrefix}`);
+        }
+        if (options.randomizeGeneration) {
+          if (options.randomizeSeed === 0 || options.randomizeSeed) {
+            switches.push(`/r:${options.randomizeSeed.toString()}`);
+          } else {
+            switches.push("/r");
+          }
         }
       }
+
+      // Execute PICT and capture the return code
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
+      const returnCode = this.pict.callMain([
+        modelFileName,
+        ...switches,
+      ]) as number;
+
+      const err = this.stderrCapture.getOuts();
+      const out = this.stdoutCapture.getOuts();
+
+      // Check for errors
+      if (returnCode !== PictErrorCode.Success) {
+        throw createPictError(returnCode, model, err);
+      }
+
+      // Parse the output
+      const lines = out.split("\n").map((m) => m.split("\t"));
+      return {
+        result: {
+          header: lines[0],
+          body: lines.slice(1),
+        },
+        modelFile: model,
+        message: err,
+      };
+    } finally {
+      this.pict.FS.unlink(modelFileName);
+      if (hasSeedRowsFile) {
+        this.pict.FS.unlink(seedRowsFileName);
+      }
     }
-
-    // Execute PICT and capture the return code
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
-    const returnCode = this.pict.callMain(["model.txt", ...switches]) as number;
-    this.pict.FS.unlink("model.txt");
-
-    const err = this.stderrCapture.getOuts();
-    const out = this.stdoutCapture.getOuts();
-
-    // Check for errors
-    if (returnCode !== PictErrorCode.Success) {
-      throw createPictError(returnCode, model, err);
-    }
-
-    // Parse the output
-    const lines = out.split("\n").map((m) => m.split("\t"));
-    return {
-      result: {
-        header: lines[0],
-        body: lines.slice(1),
-      },
-      modelFile: model,
-      message: err,
-    };
   }
 }
 
