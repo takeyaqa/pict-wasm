@@ -55,6 +55,24 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
 );
 ```
 
+### With Seed Rows
+
+```typescript
+const output = runner.run(
+  [
+    { name: "A", values: "0, 1" },
+    { name: "B", values: "0, 1" },
+    { name: "C", values: "0, 1" },
+    { name: "D", values: "0, 1" },
+  ],
+  {
+    // TSV format: header + rows (maps to PICT /e:file)
+    seedRowsText: `A\tB\tC\tD
+0\t0\t0\t0`,
+  },
+);
+```
+
 ### With Options
 
 ```typescript
@@ -76,7 +94,7 @@ const output = runner.run(parameters, {
 
 Creates a new `PictRunner` instance. This async factory method must be used instead of a constructor.
 
-### `runner.run(parameters, options?): PictOutput`
+### `runner.run(parameters, runOptions?): PictOutput`
 
 Generates test cases from the given parameters.
 
@@ -86,6 +104,7 @@ Generates test cases from the given parameters.
 | ------------------------- | ----------------- | ------------------------------------------------ |
 | `parameters`              | `PictParameter[]` | Array of `{ name: string, values: string }`      |
 | `options.constraintsText` | `string`          | PICT constraint expressions                      |
+| `options.seedRowsText`    | `string`          | Seed rows in TSV format (header + rows, maps to `/e:file`) |
 | `options.subModels`       | `PictSubModel[]`  | Sub-model definitions for mixed-strength testing |
 | `options.options`         | `PictOptions`     | Generation options (see below)                   |
 
@@ -152,6 +171,7 @@ import type {
   PictParameter,
   PictSubModel,
   PictOptions,
+  PictRunOptions,
   PictResult,
   PictOutput,
 } from "@takeyaqa/pict-wasm";

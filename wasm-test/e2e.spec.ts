@@ -464,6 +464,36 @@ B: !1, 0, 1`);
     });
   });
 
+  describe("run with seed rows", () => {
+    let pictRunner: PictRunner;
+
+    beforeEach(async () => {
+      pictRunner = await PictRunner.create();
+    });
+
+    it("should include seeded rows when seedRowsText is provided", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "0, 1" },
+          { name: "B", values: "0, 1" },
+          { name: "C", values: "0, 1" },
+          { name: "D", values: "0, 1" },
+        ],
+        {
+          seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+        },
+      );
+
+      expect(output.result.header).toEqual(["A", "B", "C", "D"]);
+      expect(output.result.body.some((m) => m.join("") === "0000")).toBe(true);
+      expect(output.modelFile).toBe(`A: 0, 1
+B: 0, 1
+C: 0, 1
+D: 0, 1`);
+      expect(output.message).toBe("");
+    });
+  });
+
   describe("error handling", () => {
     let pictRunner: PictRunner;
 
