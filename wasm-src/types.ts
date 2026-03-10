@@ -104,6 +104,11 @@ export interface PictOptions {
    */
   randomizeSeed?: number;
   /**
+   * Enables case-sensitive model evaluation.
+   * Maps to PICT CLI option `/c` (default: `false`).
+   */
+  caseSensitive?: boolean;
+  /**
    * Character used to separate values in parameter definitions.
    * Maps to PICT CLI option `/d:C` (default: `,`).
    */

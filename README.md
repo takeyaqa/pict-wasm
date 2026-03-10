@@ -82,6 +82,7 @@ const output = runner.run(parameters, {
     valueSeparator: ";", // Maps to /d:C (default: ",")
     aliasSeparator: "$", // Maps to /a:C (default: "|")
     negativeValuePrefix: "!", // Maps to /n:C (default: "~")
+    caseSensitive: true, // Maps to /c (default: false)
     randomizeGeneration: true, // Randomize output order
     randomizeSeed: 42, // For reproducible results
   },
@@ -116,6 +117,7 @@ Generates test cases from the given parameters.
 | `valueSeparator`      | `string`          | `","`   | Value separator (`/d:C`)                                                    |
 | `aliasSeparator`      | `string`          | `"|"`   | Alias separator (`/a:C`)                                                    |
 | `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                              |
+| `caseSensitive`       | `boolean`         | `false` | Case-sensitive model evaluation (`/c`)                                      |
 | `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                   |
 | `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                         |
 

@@ -72,7 +72,7 @@ export class PictRunner {
    *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
    *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
-   *   - `options`: Generation options such as order, randomization, and custom separators.
+   *   - `options`: Generation options such as order, randomization, case sensitivity, and custom separators.
    * @returns The output containing generated test cases, the model file content, and any messages.
    * @throws {PictBadOptionError} When an invalid option is provided.
    * @throws {PictBadModelError} When the model definition is invalid.
@@ -107,6 +107,7 @@ export class PictRunner {
    *       orderOfCombinations: 3,
    *       randomizeGeneration: true,
    *       randomizeSeed: 42,
+   *       caseSensitive: true,
    *       valueSeparator: ";",
    *       aliasSeparator: "$",
    *       negativeValuePrefix: "!",
@@ -185,6 +186,9 @@ export class PictRunner {
         }
         if (options.negativeValuePrefix !== undefined) {
           switches.push(`/n:${options.negativeValuePrefix}`);
+        }
+        if (options.caseSensitive) {
+          switches.push("/c");
         }
         if (options.randomizeGeneration) {
           if (options.randomizeSeed === 0 || options.randomizeSeed) {
