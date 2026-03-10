@@ -89,8 +89,9 @@ export interface PictOptions {
    * The order of combinations to generate (default is 2 for pairwise).
    * Higher values generate more comprehensive test suites but with more test cases.
    * For example, 3 generates all 3-wise combinations.
+   * Set to `"max"` to use exhaustive order (equivalent to the number of parameters).
    */
-  orderOfCombinations?: number;
+  orderOfCombinations?: number | "max";
   /**
    * When set to true, randomizes the order of test case generation.
    * This can produce different (but equally valid) test suites on each run.

@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from "vitest";
 import {
   PictRunner,
   PictError,
+  PictBadOptionError,
   PictBadModelError,
   PictBadConstraintsError,
 } from "../dist/index.js";
@@ -269,6 +270,33 @@ Compression: ON, OFF`);
       expect(output.message).toBe("");
     });
 
+    it("should run with exhaustive order when combinations are max", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "0, 1" },
+          { name: "B", values: "0, 1" },
+          { name: "C", values: "0, 1" },
+        ],
+        { options: { orderOfCombinations: "max" } },
+      );
+      expect(output.result.header).toEqual(["A", "B", "C"]);
+      expect(output.result.body.length).toEqual(8);
+      expect(output.result.body.map((m) => m.join(",")).toSorted()).toEqual([
+        "0,0,0",
+        "0,0,1",
+        "0,1,0",
+        "0,1,1",
+        "1,0,0",
+        "1,0,1",
+        "1,1,0",
+        "1,1,1",
+      ]);
+      expect(output.modelFile).toBe(`A: 0, 1
+B: 0, 1
+C: 0, 1`);
+      expect(output.message).toBe("");
+    });
+
     it("should run with randomized generation", () => {
       const output = pictRunner.run(
         [
@@ -383,6 +411,20 @@ Compression: ON, OFF`);
             { options: { orderOfCombinations: 10 } },
           );
         }).toThrow(PictBadModelError);
+      });
+    });
+
+    describe("PictBadOptionError", () => {
+      it("should throw PictBadOptionError when order is 0", () => {
+        expect(() => {
+          pictRunner.run(
+            [
+              { name: "A", values: "1, 2" },
+              { name: "B", values: "x, y" },
+            ],
+            { options: { orderOfCombinations: 0 } },
+          );
+        }).toThrow(PictBadOptionError);
       });
     });
 

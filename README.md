@@ -60,7 +60,7 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
 ```typescript
 const output = runner.run(parameters, {
   options: {
-    orderOfCombinations: 3, // Default: 2 (pairwise)
+    orderOfCombinations: 3, // or "max"; default: 2 (pairwise)
     randomizeGeneration: true, // Randomize output order
     randomizeSeed: 42, // For reproducible results
   },
@@ -90,7 +90,7 @@ Generates test cases from the given parameters.
 
 | Option                | Type      | Default | Description                                        |
 | --------------------- | --------- | ------- | -------------------------------------------------- |
-| `orderOfCombinations` | `number`  | `2`     | Combination order (2 = pairwise, 3 = 3-wise, etc.) |
+| `orderOfCombinations` | `number \| "max"`  | `2`     | Combination order (`2` = pairwise, `3` = 3-wise, etc., `"max"` = exhaustive) |
 | `randomizeGeneration` | `boolean` | `false` | Randomize test case order                          |
 | `randomizeSeed`       | `number`  | -       | Seed for reproducible randomization                |
 
@@ -239,4 +239,3 @@ Once built, you can run it with a sample model as follows
 To use your own models, please execute
 
     podman run -it --rm -v ./<local-dir>:/var/pict:Z pict:latest <your-model-file> [<pict-options>]
-
