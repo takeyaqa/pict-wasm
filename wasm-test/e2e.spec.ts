@@ -485,7 +485,7 @@ B: !1, 0, 1`);
       );
 
       expect(output.result.header).toEqual(["A", "B", "C", "D"]);
-      expect(output.result.body.some((m) => m.join("") === "0000")).toBe(true);
+      expect(output.result.body).toContainEqual(["0", "0", "0", "0"]);
       expect(output.modelFile).toBe(`A: 0, 1
 B: 0, 1
 C: 0, 1
