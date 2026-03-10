@@ -72,11 +72,11 @@ export class PictRunner {
    * Executes PICT with the given parameters and options to generate test cases.
    *
    * @param parameters - An array of parameter definitions, each containing a name
-   *   and comma-separated values.
+   *   and a separator-delimited value list.
    * @param options - Optional configuration object containing:
    *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
-   *   - `options`: Generation options such as order of combinations and randomization settings.
+   *   - `options`: Generation options such as order, randomization, and custom separators.
    * @returns The output containing generated test cases, the model file content, and any messages.
    * @throws {PictBadOptionError} When an invalid option is provided.
    * @throws {PictBadModelError} When the model definition is invalid.
@@ -103,7 +103,7 @@ export class PictRunner {
    *   }
    * );
    *
-   * // With options for 3-wise combinations and randomization
+   * // With options for 3-wise combinations, randomization, and custom separators
    * const output = runner.run(
    *   parameters,
    *   {
@@ -111,6 +111,9 @@ export class PictRunner {
    *       orderOfCombinations: 3,
    *       randomizeGeneration: true,
    *       randomizeSeed: 42,
+   *       valueSeparator: ";",
+   *       aliasSeparator: "$",
+   *       negativeValuePrefix: "!",
    *     },
    *   }
    * );
@@ -163,6 +166,15 @@ export class PictRunner {
     if (options) {
       if (options.orderOfCombinations !== undefined) {
         switches.push(`/o:${options.orderOfCombinations.toString()}`);
+      }
+      if (options.valueSeparator !== undefined) {
+        switches.push(`/d:${options.valueSeparator}`);
+      }
+      if (options.aliasSeparator !== undefined) {
+        switches.push(`/a:${options.aliasSeparator}`);
+      }
+      if (options.negativeValuePrefix !== undefined) {
+        switches.push(`/n:${options.negativeValuePrefix}`);
       }
       if (options.randomizeGeneration) {
         if (options.randomizeSeed === 0 || options.randomizeSeed) {

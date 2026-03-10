@@ -103,4 +103,19 @@ export interface PictOptions {
    * If not specified while `randomizeGeneration` is true, a random seed will be used.
    */
   randomizeSeed?: number;
+  /**
+   * Character used to separate values in parameter definitions.
+   * Maps to PICT CLI option `/d:C` (default: `,`).
+   */
+  valueSeparator?: string;
+  /**
+   * Character used to separate aliases in value definitions.
+   * Maps to PICT CLI option `/a:C` (default: `|`).
+   */
+  aliasSeparator?: string;
+  /**
+   * Prefix used to mark negative (out-of-range) values.
+   * Maps to PICT CLI option `/n:C` (default: `~`).
+   */
+  negativeValuePrefix?: string;
 }

@@ -61,6 +61,9 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
 const output = runner.run(parameters, {
   options: {
     orderOfCombinations: 3, // or "max"; default: 2 (pairwise)
+    valueSeparator: ";", // Maps to /d:C (default: ",")
+    aliasSeparator: "$", // Maps to /a:C (default: "|")
+    negativeValuePrefix: "!", // Maps to /n:C (default: "~")
     randomizeGeneration: true, // Randomize output order
     randomizeSeed: 42, // For reproducible results
   },
@@ -88,11 +91,14 @@ Generates test cases from the given parameters.
 
 #### PictOptions
 
-| Option                | Type      | Default | Description                                        |
-| --------------------- | --------- | ------- | -------------------------------------------------- |
-| `orderOfCombinations` | `number \| "max"`  | `2`     | Combination order (`2` = pairwise, `3` = 3-wise, etc., `"max"` = exhaustive) |
-| `randomizeGeneration` | `boolean` | `false` | Randomize test case order                          |
-| `randomizeSeed`       | `number`  | -       | Seed for reproducible randomization                |
+| Option                | Type              | Default | Description                                                                 |
+| --------------------- | ----------------- | ------- | --------------------------------------------------------------------------- |
+| `orderOfCombinations` | `number \| "max"` | `2`     | Combination order (`2` = pairwise, `3` = 3-wise, etc., `"max"` = exhaustive) |
+| `valueSeparator`      | `string`          | `","`   | Value separator (`/d:C`)                                                    |
+| `aliasSeparator`      | `string`          | `"|"`   | Alias separator (`/a:C`)                                                    |
+| `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                              |
+| `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                   |
+| `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                         |
 
 #### Return Value
 

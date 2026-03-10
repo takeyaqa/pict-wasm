@@ -391,6 +391,77 @@ Cluster size: 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 Compression: ON, OFF`);
       expect(output.message).toBe("Used seed: 0");
     });
+
+    it("should run with custom value separator", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "0;1" },
+          { name: "B", values: "x;y" },
+        ],
+        { options: { valueSeparator: ";" } },
+      );
+
+      expect(output.result.header).toEqual(["A", "B"]);
+      expect(output.result.body.length).toEqual(4);
+      expect(output.result.body.map((m) => m.join(",")).toSorted()).toEqual([
+        "0,x",
+        "0,y",
+        "1,x",
+        "1,y",
+      ]);
+      expect(output.modelFile).toBe(`A: 0;1
+B: x;y`);
+      expect(output.message).toBe("");
+    });
+
+    it("should run with custom alias separator", () => {
+      const output = pictRunner.run(
+        [
+          { name: "OS", values: "Windows$Win, Linux$Lin" },
+          { name: "Browser", values: "Chrome, Firefox" },
+        ],
+        { options: { aliasSeparator: "$" } },
+      );
+      const osAliases = new Set(["Windows", "Win", "Linux", "Lin"]);
+
+      expect(output.result.header).toEqual(["OS", "Browser"]);
+      expect(output.result.body.length).toEqual(4);
+      expect(output.result.body.every(([os]) => osAliases.has(os))).toBe(true);
+      expect(output.result.body.some(([os]) => os.includes("$"))).toBe(false);
+      expect(output.modelFile).toBe(`OS: Windows$Win, Linux$Lin
+Browser: Chrome, Firefox`);
+      expect(output.message).toBe("");
+    });
+
+    it("should run with custom negative value prefix", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "!1, 0, 1" },
+          { name: "B", values: "!1, 0, 1" },
+        ],
+        { options: { negativeValuePrefix: "!" } },
+      );
+
+      expect(output.result.header).toEqual(["A", "B"]);
+      expect(
+        output.result.body.some(
+          ([a, b]) => a.startsWith("!") && b.startsWith("!"),
+        ),
+      ).toBe(false);
+      expect(
+        output.result.body.some(
+          ([a, b]) => a.startsWith("!") && !b.startsWith("!"),
+        ),
+      ).toBe(true);
+      expect(
+        output.result.body.some(
+          ([a, b]) => !a.startsWith("!") && b.startsWith("!"),
+        ),
+      ).toBe(true);
+      expect(output.modelFile).toBe(`A: !1, 0, 1
+B: !1, 0, 1`);
+      expect(output.message).toBe("");
+    });
   });
 
   describe("error handling", () => {
