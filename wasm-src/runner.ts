@@ -114,6 +114,7 @@ export class PictRunner {
    *     },
    *   }
    * );
+   * // `orderOfCombinations` also supports "max" for exhaustive coverage.
    *
    * // Error handling
    * try {
@@ -160,7 +161,7 @@ export class PictRunner {
     // Set the options
     const switches: string[] = [];
     if (options) {
-      if (options.orderOfCombinations) {
+      if (options.orderOfCombinations !== undefined) {
         switches.push(`/o:${options.orderOfCombinations.toString()}`);
       }
       if (options.randomizeGeneration) {
