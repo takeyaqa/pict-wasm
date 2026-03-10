@@ -62,7 +62,7 @@ const output = runner.run(parameters, {
   options: {
     orderOfCombinations: 3, // or "max"; default: 2 (pairwise)
     valueSeparator: ";", // Maps to /d:C (default: ",")
-    aliasSeparator: "!", // Maps to /a:C (default: "|")
+    aliasSeparator: "$", // Maps to /a:C (default: "|")
     negativeValuePrefix: "!", // Maps to /n:C (default: "~")
     randomizeGeneration: true, // Randomize output order
     randomizeSeed: 42, // For reproducible results

@@ -417,18 +417,18 @@ B: x;y`);
     it("should run with custom alias separator", () => {
       const output = pictRunner.run(
         [
-          { name: "OS", values: "Windows!Win, Linux!Lin" },
+          { name: "OS", values: "Windows$Win, Linux$Lin" },
           { name: "Browser", values: "Chrome, Firefox" },
         ],
-        { options: { aliasSeparator: "!" } },
+        { options: { aliasSeparator: "$" } },
       );
       const osAliases = new Set(["Windows", "Win", "Linux", "Lin"]);
 
       expect(output.result.header).toEqual(["OS", "Browser"]);
       expect(output.result.body.length).toEqual(4);
       expect(output.result.body.every(([os]) => osAliases.has(os))).toBe(true);
-      expect(output.result.body.some(([os]) => os.includes("!"))).toBe(false);
-      expect(output.modelFile).toBe(`OS: Windows!Win, Linux!Lin
+      expect(output.result.body.some(([os]) => os.includes("$"))).toBe(false);
+      expect(output.modelFile).toBe(`OS: Windows$Win, Linux$Lin
 Browser: Chrome, Firefox`);
       expect(output.message).toBe("");
     });

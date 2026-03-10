@@ -112,7 +112,7 @@ export class PictRunner {
    *       randomizeGeneration: true,
    *       randomizeSeed: 42,
    *       valueSeparator: ";",
-   *       aliasSeparator: "!",
+   *       aliasSeparator: "$",
    *       negativeValuePrefix: "!",
    *     },
    *   }
