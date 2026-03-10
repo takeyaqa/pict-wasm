@@ -392,6 +392,55 @@ Compression: ON, OFF`);
       expect(output.message).toBe("Used seed: 0");
     });
 
+    it("should run with case-sensitive model evaluation", () => {
+      const output = pictRunner.run(
+        [
+          { name: "OS", values: "Windows, Linux" },
+          { name: "os", values: "windows, linux" },
+        ],
+        { options: { caseSensitive: true } },
+      );
+
+      expect(output.result.header).toEqual(["OS", "os"]);
+      expect(output.result.body.length).toEqual(4);
+      expect(output.result.body.map((m) => m.join(",")).toSorted()).toEqual([
+        "Linux,linux",
+        "Linux,windows",
+        "Windows,linux",
+        "Windows,windows",
+      ]);
+      expect(output.modelFile).toBe(`OS: Windows, Linux
+os: windows, linux`);
+      expect(output.message).toBe("");
+    });
+
+    it("should evaluate constraints case-sensitively when enabled", () => {
+      const parameters = [
+        { name: "OS", values: "Win10, win10" },
+        { name: "B", values: "X, Y" },
+      ];
+      const constraintsText = 'IF [OS] = "win10" THEN [B] = "X";';
+
+      const outputCaseInsensitive = pictRunner.run(parameters, {
+        constraintsText,
+      });
+      const outputCaseSensitive = pictRunner.run(parameters, {
+        constraintsText,
+        options: { caseSensitive: true },
+      });
+
+      expect(outputCaseInsensitive.result.header).toEqual(["OS", "B"]);
+      expect(
+        outputCaseInsensitive.result.body.every(([, b]) => b === "X"),
+      ).toBe(true);
+      expect(outputCaseSensitive.result.header).toEqual(["OS", "B"]);
+      expect(outputCaseSensitive.result.body).toContainEqual(["Win10", "Y"]);
+      expect(outputCaseSensitive.result.body).not.toContainEqual([
+        "win10",
+        "Y",
+      ]);
+    });
+
     it("should run with custom value separator", () => {
       const output = pictRunner.run(
         [
@@ -511,6 +560,15 @@ D: 0, 1`);
             ],
             { options: { orderOfCombinations: 10 } },
           );
+        }).toThrow(PictBadModelError);
+      });
+
+      it("should evaluate model case-insensitively by default", () => {
+        expect(() => {
+          pictRunner.run([
+            { name: "OS", values: "Windows, Linux" },
+            { name: "os", values: "windows, linux" },
+          ]);
         }).toThrow(PictBadModelError);
       });
     });
