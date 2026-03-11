@@ -72,8 +72,9 @@ export class PictRunner {
    *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
    *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
-   *   - `options`: Generation options such as order, randomization, case sensitivity, and custom separators.
-   * @returns The output containing generated test cases, the model file content, and any messages.
+   *   - `options`: Generation options such as order, randomization, case sensitivity, custom separators, and model statistics mode (`/s`).
+   * @returns The output containing generated test cases or model statistics (`/s`),
+   *   the model file content, and any messages.
    * @throws {PictBadOptionError} When an invalid option is provided.
    * @throws {PictBadModelError} When the model definition is invalid.
    * @throws {PictBadConstraintsError} When constraint definitions are invalid.
@@ -190,6 +191,9 @@ export class PictRunner {
         if (options.caseSensitive) {
           switches.push("/c");
         }
+        if (options.showModelStatistics) {
+          switches.push("/s");
+        }
         if (options.randomizeGeneration) {
           if (options.randomizeSeed === 0 || options.randomizeSeed) {
             switches.push(`/r:${options.randomizeSeed.toString()}`);
@@ -214,7 +218,19 @@ export class PictRunner {
         throw createPictError(returnCode, model, err);
       }
 
-      // Parse the output
+      if (options?.showModelStatistics) {
+        return {
+          result: {
+            header: [],
+            body: [],
+          },
+          modelStatistics: out,
+          modelFile: model,
+          message: err,
+        };
+      }
+
+      // Parse the output as TSV test cases
       const lines = out.split("\n").map((m) => m.split("\t"));
       return {
         result: {
