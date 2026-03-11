@@ -82,9 +82,9 @@ const output = runner.run(parameters, {
     valueSeparator: ";", // Maps to /d:C (default: ",")
     aliasSeparator: "$", // Maps to /a:C (default: "|")
     negativeValuePrefix: "!", // Maps to /n:C (default: "~")
-    caseSensitive: true, // Maps to /c (default: false)
     randomizeGeneration: true, // Randomize output order
     randomizeSeed: 42, // For reproducible results
+    caseSensitive: true, // Maps to /c (default: false)
   },
 });
 ```
@@ -117,26 +117,26 @@ Generates test cases from the given parameters.
 
 #### Parameters
 
-| Name                      | Type              | Description                                      |
-| ------------------------- | ----------------- | ------------------------------------------------ |
-| `parameters`              | `PictParameter[]` | Array of `{ name: string, values: string }`      |
-| `options.constraintsText` | `string`          | PICT constraint expressions                      |
-| `options.seedRowsText`    | `string`          | Seed rows in TSV format (header + rows, maps to `/e:file`) |
-| `options.subModels`       | `PictSubModel[]`  | Sub-model definitions for mixed-strength testing |
-| `options.options`         | `PictOptions`     | Generation options (see below)                   |
+| Name                         | Type              | Description                                                |
+| ---------------------------- | ----------------- | ---------------------------------------------------------- |
+| `parameters`                 | `PictParameter[]` | Array of `{ name: string, values: string }`                |
+| `runOptions.constraintsText` | `string`          | PICT constraint expressions                                |
+| `runOptions.seedRowsText`    | `string`          | Seed rows in TSV format (header + rows, maps to `/e:file`) |
+| `runOptions.subModels`       | `PictSubModel[]`  | Sub-model definitions for mixed-strength testing           |
+| `runOptions.options`         | `PictOptions`     | Generation options (see below)                             |
 
 #### PictOptions
 
-| Option                | Type              | Default | Description                                                                 |
-| --------------------- | ----------------- | ------- | --------------------------------------------------------------------------- |
+| Option                | Type              | Default | Description                                                                  |
+| --------------------- | ----------------- | ------- | ---------------------------------------------------------------------------- |
 | `orderOfCombinations` | `number \| "max"` | `2`     | Combination order (`2` = pairwise, `3` = 3-wise, etc., `"max"` = exhaustive) |
-| `valueSeparator`      | `string`          | `","`   | Value separator (`/d:C`)                                                    |
-| `aliasSeparator`      | `string`          | `"|"`   | Alias separator (`/a:C`)                                                    |
-| `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                              |
-| `caseSensitive`       | `boolean`         | `false` | Case-sensitive model evaluation (`/c`)                                      |
-| `showModelStatistics` | `boolean`         | `false` | Show model statistics instead of test cases (`/s`)                          |
-| `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                   |
-| `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                         |
+| `valueSeparator`      | `string`          | `","`   | Value separator (`/d:C`)                                                     |
+| `aliasSeparator`      | `string`          | `"\|"`  | Alias separator (`/a:C`)                                                     |
+| `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                               |
+| `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                    |
+| `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                          |
+| `caseSensitive`       | `boolean`         | `false` | Case-sensitive model evaluation (`/c`)                                       |
+| `showModelStatistics` | `boolean`         | `false` | Show model statistics instead of test cases (`/s`)                           |
 
 #### Return Value
 
