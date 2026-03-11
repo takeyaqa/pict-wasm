@@ -74,6 +74,7 @@ File system: FAT, FAT32, NTFS
 Cluster size: 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 Compression: ON, OFF`);
       expect(output.message).toBe("");
+      expect(output.modelStatistics).toBeUndefined();
     });
 
     it("should run without errors when parameters are unicode and special characters", () => {
@@ -328,6 +329,50 @@ File system: FAT, FAT32, NTFS
 Cluster size: 512, 1024, 2048, 4096, 8192, 16384, 32768, 65536
 Compression: ON, OFF`);
       expect(output.message).toMatch(/Used seed: [0-9]+/);
+    });
+
+    it("should return model statistics when showModelStatistics is enabled", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "0, 1" },
+          { name: "B", values: "x, y" },
+        ],
+        { options: { showModelStatistics: true } },
+      );
+      expect(output.result.header).toEqual([]);
+      expect(output.result.body).toEqual([]);
+      expect(output.modelStatistics).toBeDefined();
+      expect(output.modelStatistics).toMatch(/Combinations:\s+4/);
+      expect(output.modelStatistics).toMatch(/Generated tests:\s*4/);
+      expect(output.modelStatistics).toMatch(/Generation time:\d+:\d{2}:\d{2}/);
+      expect(output.modelFile).toBe(`A: 0, 1
+B: x, y`);
+      expect(output.message).toBe("");
+    });
+
+    it("should return model statistics and seed message when randomization is enabled", () => {
+      const output = pictRunner.run(
+        [
+          { name: "A", values: "0, 1" },
+          { name: "B", values: "x, y" },
+        ],
+        {
+          options: {
+            showModelStatistics: true,
+            randomizeGeneration: true,
+            randomizeSeed: 0,
+          },
+        },
+      );
+      expect(output.result.header).toEqual([]);
+      expect(output.result.body).toEqual([]);
+      expect(output.modelStatistics).toBeDefined();
+      expect(output.modelStatistics).toMatch(/Combinations:\s+4/);
+      expect(output.modelStatistics).toMatch(/Generated tests:\s*4/);
+      expect(output.modelStatistics).toMatch(/Generation time:\d+:\d{2}:\d{2}/);
+      expect(output.modelFile).toBe(`A: 0, 1
+B: x, y`);
+      expect(output.message).toBe("Used seed: 0");
     });
 
     it("should produce deterministic results when seed is provided", () => {

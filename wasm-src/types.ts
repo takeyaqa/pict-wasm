@@ -67,8 +67,19 @@ export interface PictResult {
 export interface PictOutput {
   /**
    * The parsed test case results containing header and body.
+   *
+   * When `options.showModelStatistics` is enabled, PICT prints model statistics
+   * instead of test cases, and this field is returned as:
+   * `{ header: [], body: [] }`.
    */
   result: PictResult;
+  /**
+   * Raw model statistics text produced by PICT when
+   * `options.showModelStatistics` is enabled (`/s`).
+   *
+   * This value is undefined for normal test case generation.
+   */
+  modelStatistics?: string;
   /**
    * The complete model file content that was passed to PICT,
    * including parameters, sub-models, and constraints.
@@ -108,6 +119,11 @@ export interface PictOptions {
    * Maps to PICT CLI option `/c` (default: `false`).
    */
   caseSensitive?: boolean;
+  /**
+   * Shows model statistics instead of generated test cases.
+   * Maps to PICT CLI option `/s` (default: `false`).
+   */
+  showModelStatistics?: boolean;
   /**
    * Character used to separate values in parameter definitions.
    * Maps to PICT CLI option `/d:C` (default: `,`).

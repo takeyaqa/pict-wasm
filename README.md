@@ -89,6 +89,22 @@ const output = runner.run(parameters, {
 });
 ```
 
+### With Model Statistics (`/s`)
+
+```typescript
+const output = runner.run(parameters, {
+  options: {
+    showModelStatistics: true, // Maps to /s
+  },
+});
+
+console.log(output.result); // { header: [], body: [] }
+console.log(output.modelStatistics);
+// Combinations:   4
+// Generated tests:4
+// Generation time:0:00:00
+```
+
 ## API Reference
 
 ### `PictRunner.create(): Promise<PictRunner>`
@@ -118,6 +134,7 @@ Generates test cases from the given parameters.
 | `aliasSeparator`      | `string`          | `"|"`   | Alias separator (`/a:C`)                                                    |
 | `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                              |
 | `caseSensitive`       | `boolean`         | `false` | Case-sensitive model evaluation (`/c`)                                      |
+| `showModelStatistics` | `boolean`         | `false` | Show model statistics instead of test cases (`/s`)                          |
 | `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                   |
 | `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                         |
 
@@ -126,9 +143,10 @@ Generates test cases from the given parameters.
 ```typescript
 interface PictOutput {
   result: {
-    header: string[]; // Parameter names
-    body: string[][]; // Generated test cases
+    header: string[]; // Parameter names (empty when /s is enabled)
+    body: string[][]; // Generated test cases (empty when /s is enabled)
   };
+  modelStatistics?: string; // Raw statistics text when /s is enabled
   modelFile: string; // Generated model file content
   message?: string; // Additional output (e.g., random seed used)
 }
