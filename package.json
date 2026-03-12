@@ -1,6 +1,6 @@
 {
   "name": "@takeyaqa/pict-wasm",
-  "version": "3.7.4-wasm.15",
+  "version": "3.7.4-wasm.16",
   "description": "Unofficial WebAssembly build of Microsoft's PICT",
   "keywords": [
     "pict",
