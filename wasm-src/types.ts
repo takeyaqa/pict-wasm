@@ -164,3 +164,22 @@ export interface PictRunOptions {
    */
   options?: PictOptions;
 }
+
+/**
+ * Run-level options for {@link PictRunner.runModel}.
+ *
+ * This variant is intended for callers who already have a complete PICT model
+ * file string and only need runtime options and optional seed rows.
+ */
+export interface PictModelRunOptions {
+  /**
+   * Seed rows in TSV format (header + rows), mapped to PICT CLI option `/e:file`.
+   *
+   * This string is written to an internal virtual file and passed to PICT.
+   */
+  seedRowsText?: string;
+  /**
+   * Generation options mapped to PICT CLI switches.
+   */
+  options?: PictOptions;
+}

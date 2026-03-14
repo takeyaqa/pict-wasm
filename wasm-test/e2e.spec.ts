@@ -588,6 +588,53 @@ D: 0, 1`);
     });
   });
 
+  describe("runModel", () => {
+    let pictRunner: PictRunner;
+
+    beforeEach(async () => {
+      pictRunner = await PictRunner.create();
+    });
+
+    it("should run without errors when a raw model file includes submodels and constraints", () => {
+      const modelFile = `A: Enabled, Disabled
+B: x, y
+C: p, q
+D: Local, Remote
+
+{ A, B, C } @ 3
+
+IF [A] = "Enabled" THEN [D] = "Local";`;
+
+      const output = pictRunner.runModel(modelFile);
+
+      expect(output.result.header).toEqual(["A", "B", "C", "D"]);
+      expect(output.result.body.length).toBeGreaterThan(0);
+      expect(
+        output.result.body.every(
+          ([a, , , d]) => a !== "Enabled" || d === "Local",
+        ),
+      ).toBe(true);
+      expect(output.modelFile).toBe(modelFile);
+      expect(output.message).toBe("");
+    });
+
+    it("should include seeded rows when using a raw model file", () => {
+      const modelFile = `A: 0, 1
+B: 0, 1
+C: 0, 1
+D: 0, 1`;
+
+      const output = pictRunner.runModel(modelFile, {
+        seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+      });
+
+      expect(output.result.header).toEqual(["A", "B", "C", "D"]);
+      expect(output.result.body).toContainEqual(["0", "0", "0", "0"]);
+      expect(output.modelFile).toBe(modelFile);
+      expect(output.message).toBe("");
+    });
+  });
+
   describe("error handling", () => {
     let pictRunner: PictRunner;
 
@@ -616,6 +663,22 @@ D: 0, 1`);
           ]);
         }).toThrow(PictBadModelError);
       });
+
+      it("should surface raw model file errors from WASM and preserve the exact model file text", () => {
+        const modelFile = `A: 0, 1
+A: x, y`;
+
+        let thrownError: PictError | undefined;
+        try {
+          pictRunner.runModel(modelFile);
+        } catch (error) {
+          thrownError = error as PictError;
+        }
+
+        expect(thrownError).toBeDefined();
+        expect(thrownError).toBeInstanceOf(PictBadModelError);
+        expect(thrownError?.modelFile).toBe(modelFile);
+      });
     });
 
     describe("PictBadOptionError", () => {
@@ -627,6 +690,28 @@ D: 0, 1`);
               { name: "B", values: "x, y" },
             ],
             { options: { orderOfCombinations: 0 } },
+          );
+        }).toThrow(PictBadOptionError);
+      });
+
+      it("should throw PictBadOptionError when runModel input is combined with constraintsText", () => {
+        expect(() => {
+          pictRunner.runModel(
+            "A: 0, 1",
+            {
+              constraintsText: 'IF [A] = "0" THEN [A] = "1";',
+            } as never,
+          );
+        }).toThrow(PictBadOptionError);
+      });
+
+      it("should throw PictBadOptionError when runModel input is combined with subModels", () => {
+        expect(() => {
+          pictRunner.runModel(
+            "A: 0, 1\nB: x, y",
+            {
+              subModels: [{ parameterNames: ["A", "B"], order: 2 }],
+            } as never,
           );
         }).toThrow(PictBadOptionError);
       });
