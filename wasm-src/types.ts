@@ -125,6 +125,12 @@ export interface PictOptions {
    */
   showModelStatistics?: boolean;
   /**
+   * Seed rows in TSV format (header + rows), mapped to PICT CLI option `/e:file`.
+   *
+   * This string is written to an internal virtual file and passed to PICT.
+   */
+  seedRowsText?: string;
+  /**
    * Character used to separate values in parameter definitions.
    * Maps to PICT CLI option `/d:C` (default: `,`).
    */
@@ -154,12 +160,6 @@ export interface PictRunOptions {
    */
   constraintsText?: string;
   /**
-   * Seed rows in TSV format (header + rows), mapped to PICT CLI option `/e:file`.
-   *
-   * This string is written to an internal virtual file and passed to PICT.
-   */
-  seedRowsText?: string;
-  /**
    * Generation options mapped to PICT CLI switches.
    */
   options?: PictOptions;
@@ -169,15 +169,9 @@ export interface PictRunOptions {
  * Run-level options for {@link PictRunner.runModel}.
  *
  * This variant is intended for callers who already have a complete PICT model
- * file string and only need runtime options and optional seed rows.
+ * file string and only need runtime options.
  */
 export interface PictModelRunOptions {
-  /**
-   * Seed rows in TSV format (header + rows), mapped to PICT CLI option `/e:file`.
-   *
-   * This string is written to an internal virtual file and passed to PICT.
-   */
-  seedRowsText?: string;
   /**
    * Generation options mapped to PICT CLI switches.
    */

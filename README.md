@@ -66,9 +66,11 @@ const output = runner.run(
     { name: "D", values: "0, 1" },
   ],
   {
-    // TSV format: header + rows (maps to PICT /e:file)
-    seedRowsText: `A\tB\tC\tD
+    options: {
+      // TSV format: header + rows (maps to PICT /e:file)
+      seedRowsText: `A\tB\tC\tD
 0\t0\t0\t0`,
+    },
   },
 );
 ```
@@ -121,7 +123,6 @@ Generates test cases from the given parameters.
 | ---------------------------- | ----------------- | ---------------------------------------------------------- |
 | `parameters`                 | `PictParameter[]` | Array of `{ name: string, values: string }`                |
 | `runOptions.constraintsText` | `string`          | PICT constraint expressions                                |
-| `runOptions.seedRowsText`    | `string`          | Seed rows in TSV format (header + rows, maps to `/e:file`) |
 | `runOptions.subModels`       | `PictSubModel[]`  | Sub-model definitions for mixed-strength testing           |
 | `runOptions.options`         | `PictOptions`     | Generation options (see below)                             |
 
@@ -133,6 +134,7 @@ Generates test cases from the given parameters.
 | `valueSeparator`      | `string`          | `","`   | Value separator (`/d:C`)                                                     |
 | `aliasSeparator`      | `string`          | `"\|"`  | Alias separator (`/a:C`)                                                     |
 | `negativeValuePrefix` | `string`          | `"~"`   | Negative value prefix (`/n:C`)                                               |
+| `seedRowsText`        | `string`          | -       | Seed rows in TSV format (header + rows, maps to `/e:file`)                   |
 | `randomizeGeneration` | `boolean`         | `false` | Randomize test case order                                                    |
 | `randomizeSeed`       | `number`          | -       | Seed for reproducible randomization                                          |
 | `caseSensitive`       | `boolean`         | `false` | Case-sensitive model evaluation (`/c`)                                       |

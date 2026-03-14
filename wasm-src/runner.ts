@@ -81,8 +81,8 @@ export class PictRunner {
    * @param runOptions - Optional configuration object containing:
    *   - `subModels`: Sub-model definitions for higher-order combinations on specific parameters.
    *   - `constraintsText`: PICT constraint expressions to filter invalid combinations.
-   *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
-   *   - `options`: Generation options such as order, randomization, case sensitivity, custom separators, and model statistics mode (`/s`).
+   *   - `options`: Generation options such as order, randomization, case sensitivity,
+   *     seed rows, custom separators, and model statistics mode (`/s`).
    * @returns The output containing generated test cases or model statistics (`/s`),
    *   the model file content, and any messages.
    * @throws {PictBadOptionError} When an invalid option is provided.
@@ -115,6 +115,7 @@ export class PictRunner {
    *   parameters,
    *   {
    *     options: {
+   *       seedRowsText: "A\tB\n0\tx",
    *       orderOfCombinations: 3,
    *       randomizeGeneration: true,
    *       randomizeSeed: 42,
@@ -134,7 +135,9 @@ export class PictRunner {
    *     { name: "B", values: "x, y" },
    *   ],
    *   {
-   *     seedRowsText: "A\tB\n0\tx",
+   *     options: {
+   *       seedRowsText: "A\tB\n0\tx",
+   *     },
    *   }
    * );
    *
@@ -164,8 +167,8 @@ export class PictRunner {
    *
    * @param modelFileText - A complete PICT model file string.
    * @param runOptions - Optional configuration object containing:
-   *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
-   *   - `options`: Generation options such as order, randomization, case sensitivity, custom separators, and model statistics mode (`/s`).
+   *   - `options`: Generation options such as order, randomization, case sensitivity,
+   *     seed rows, custom separators, and model statistics mode (`/s`).
    * @returns The output containing generated test cases or model statistics (`/s`),
    *   the exact model file text passed in, and any messages.
    * @throws {PictBadOptionError} When invalid options are provided.
@@ -210,9 +213,9 @@ export class PictRunner {
 
   private executeModel(
     model: string,
-    runOptions: { seedRowsText?: string; options?: PictOptions },
+    runOptions: { options?: PictOptions },
   ): PictOutput {
-    const { seedRowsText, options } = runOptions;
+    const { options } = runOptions;
     const modelFileName = "model.txt";
     const seedRowsFileName = "seedrows.txt";
 
@@ -222,8 +225,8 @@ export class PictRunner {
     try {
       // Set the options
       const switches: string[] = [];
-      if (seedRowsText !== undefined) {
-        this.pict.FS.writeFile(seedRowsFileName, seedRowsText);
+      if (options?.seedRowsText !== undefined) {
+        this.pict.FS.writeFile(seedRowsFileName, options.seedRowsText);
         switches.push(`/e:${seedRowsFileName}`);
         hasSeedRowsFile = true;
       }

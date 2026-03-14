@@ -574,7 +574,9 @@ B: !1, 0, 1`);
           { name: "D", values: "0, 1" },
         ],
         {
-          seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+          options: {
+            seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+          },
         },
       );
 
@@ -625,7 +627,9 @@ C: 0, 1
 D: 0, 1`;
 
       const output = pictRunner.runModel(modelFile, {
-        seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+        options: {
+          seedRowsText: "A\tB\tC\tD\n0\t0\t0\t0",
+        },
       });
 
       expect(output.result.header).toEqual(["A", "B", "C", "D"]);
