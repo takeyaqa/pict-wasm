@@ -696,23 +696,17 @@ A: x, y`;
 
       it("should throw PictBadOptionError when runModel input is combined with constraintsText", () => {
         expect(() => {
-          pictRunner.runModel(
-            "A: 0, 1",
-            {
-              constraintsText: 'IF [A] = "0" THEN [A] = "1";',
-            } as never,
-          );
+          pictRunner.runModel("A: 0, 1", {
+            constraintsText: 'IF [A] = "0" THEN [A] = "1";',
+          } as never);
         }).toThrow(PictBadOptionError);
       });
 
       it("should throw PictBadOptionError when runModel input is combined with subModels", () => {
         expect(() => {
-          pictRunner.runModel(
-            "A: 0, 1\nB: x, y",
-            {
-              subModels: [{ parameterNames: ["A", "B"], order: 2 }],
-            } as never,
-          );
+          pictRunner.runModel("A: 0, 1\nB: x, y", {
+            subModels: [{ parameterNames: ["A", "B"], order: 2 }],
+          } as never);
         }).toThrow(PictBadOptionError);
       });
     });
