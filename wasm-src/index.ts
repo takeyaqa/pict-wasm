@@ -5,6 +5,7 @@ export { PictRunner } from "./runner.js";
 
 // Types
 export type {
+  PictModelRunOptions,
   PictParameter,
   PictSubModel,
   PictResult,

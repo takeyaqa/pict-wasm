@@ -1,5 +1,15 @@
-import type { PictParameter, PictOutput, PictRunOptions } from "./types.js";
-import { createPictError, PictErrorCode } from "./errors.js";
+import type {
+  PictModelRunOptions,
+  PictOptions,
+  PictParameter,
+  PictOutput,
+  PictRunOptions,
+} from "./types.js";
+import {
+  createPictError,
+  PictBadOptionError,
+  PictErrorCode,
+} from "./errors.js";
 import createModule, { type MainModule } from "../dist/pict.js";
 
 /**
@@ -142,11 +152,42 @@ export class PictRunner {
     parameters: PictParameter[],
     runOptions: PictRunOptions = {},
   ): PictOutput {
-    const { subModels, constraintsText, seedRowsText, options } = runOptions;
-    const modelFileName = "model.txt";
-    const seedRowsFileName = "seedrows.txt";
+    const model = this.buildStructuredModel(parameters, runOptions);
+    return this.executeModel(model, runOptions);
+  }
 
-    // Build the model
+  /**
+   * Executes PICT with a raw model file string and options to generate test cases.
+   *
+   * The provided model text is passed to the WASM module exactly as-is. Syntax and
+   * semantic validation are delegated to the underlying PICT engine.
+   *
+   * @param modelFileText - A complete PICT model file string.
+   * @param runOptions - Optional configuration object containing:
+   *   - `seedRowsText`: Seed rows in TSV format (maps to PICT `/e:file`).
+   *   - `options`: Generation options such as order, randomization, case sensitivity, custom separators, and model statistics mode (`/s`).
+   * @returns The output containing generated test cases or model statistics (`/s`),
+   *   the exact model file text passed in, and any messages.
+   * @throws {PictBadOptionError} When invalid options are provided.
+   * @throws {PictBadModelError} When the model definition is invalid.
+   * @throws {PictBadConstraintsError} When constraint definitions are invalid.
+   * @throws {PictBadRowSeedFileError} When the row seed file is invalid.
+   * @throws {PictGenerationError} When test case generation fails.
+   */
+  public runModel(
+    modelFileText: string,
+    runOptions: PictModelRunOptions = {},
+  ): PictOutput {
+    this.assertNoStructuredModelOptions(modelFileText, runOptions);
+    return this.executeModel(modelFileText, runOptions);
+  }
+
+  private buildStructuredModel(
+    parameters: PictParameter[],
+    runOptions: PictRunOptions,
+  ): string {
+    const { subModels, constraintsText } = runOptions;
+
     const parametersText = parameters
       .map((m) => `${m.name}: ${m.values}`)
       .join("\n");
@@ -164,6 +205,17 @@ export class PictRunner {
     if (constraintsText) {
       model = `${model}\n\n${constraintsText}`;
     }
+    return model;
+  }
+
+  private executeModel(
+    model: string,
+    runOptions: { seedRowsText?: string; options?: PictOptions },
+  ): PictOutput {
+    const { seedRowsText, options } = runOptions;
+    const modelFileName = "model.txt";
+    const seedRowsFileName = "seedrows.txt";
+
     this.pict.FS.writeFile(modelFileName, model);
 
     let hasSeedRowsFile = false;
@@ -245,6 +297,22 @@ export class PictRunner {
       if (hasSeedRowsFile) {
         this.pict.FS.unlink(seedRowsFileName);
       }
+    }
+  }
+
+  private assertNoStructuredModelOptions(
+    modelFileText: string,
+    runOptions: PictModelRunOptions,
+  ): void {
+    const structuredRunOptions = runOptions as Partial<PictRunOptions>;
+    if (
+      structuredRunOptions.subModels !== undefined ||
+      structuredRunOptions.constraintsText !== undefined
+    ) {
+      throw new PictBadOptionError(
+        modelFileText,
+        "runModel does not accept runOptions.subModels or runOptions.constraintsText.",
+      );
     }
   }
 }
