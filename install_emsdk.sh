@@ -22,9 +22,6 @@ if [ ! -d "${EMSDK_DIR}" ]; then
 
     echo "Activating EMSDK ${EMSDK_VERSION}"
     ${EMSDK_DIR}/emsdk activate ${EMSDK_VERSION}
-
-    echo "Workaround: Installing npm devDependencies for emscripten"
-    (cd ${EMSDK_DIR}/upstream/emscripten && npm ci)
 else
     # Check if installed version matches the required version
     INSTALLED_VERSION=$(cat ${EMSDK_DIR}/upstream/emscripten/emscripten-version.txt 2>/dev/null | tr -d '"' | tr -d '\n' || echo "")
@@ -39,9 +36,6 @@ else
 
         echo "Activating EMSDK ${EMSDK_VERSION}"
         ${EMSDK_DIR}/emsdk activate ${EMSDK_VERSION}
-
-        echo "Workaround: Installing npm devDependencies for emscripten"
-        (cd ${EMSDK_DIR}/upstream/emscripten && npm ci)
     else
         echo "EMSDK ${EMSDK_VERSION} is already installed"
     fi
