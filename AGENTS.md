@@ -54,7 +54,7 @@ This project wraps Microsoft's C++ PICT tool as a WebAssembly module with a Type
 
 - **Git Workflow**: Always create a new branch from `develop` before starting any task
 - **Node 22+**: Required runtime version
-- **pnpm 11**: Required package manager
+- **pnpm 10**: Required package manager
 - **Strict TypeScript** - `tseslint/strictTypeChecked` for source, `tseslint/recommended` for tests
 - **Prettier** for formatting
 - Tests run in 4 environments: Node.js, Chromium, Firefox, WebKit
