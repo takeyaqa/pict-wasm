@@ -18,31 +18,31 @@ importers:
         specifier: ^22.0.5
         version: 22.0.5
       '@vitest/browser-playwright':
-        specifier: ^4.1.2
+        specifier: ^4.1.5
         version: 4.1.5(playwright@1.59.1)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1))(vitest@4.1.5)
       '@vitest/eslint-plugin':
-        specifier: ^1.6.14
+        specifier: ^1.6.16
         version: 1.6.16(@typescript-eslint/eslint-plugin@8.59.1(@typescript-eslint/parser@8.59.1(eslint@10.2.1)(typescript@5.9.3))(eslint@10.2.1)(typescript@5.9.3))(eslint@10.2.1)(typescript@5.9.3)(vitest@4.1.5)
       eslint:
-        specifier: ^10.1.0
+        specifier: ^10.2.1
         version: 10.2.1
       eslint-config-prettier:
         specifier: ^10.1.8
         version: 10.1.8(eslint@10.2.1)
       playwright:
-        specifier: ^1.58.2
+        specifier: ^1.59.1
         version: 1.59.1
       prettier:
-        specifier: ^3.8.1
+        specifier: ^3.8.3
         version: 3.8.3
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
       typescript-eslint:
-        specifier: ^8.58.0
+        specifier: ^8.59.1
         version: 8.59.1(eslint@10.2.1)(typescript@5.9.3)
       vitest:
-        specifier: ^4.1.2
+        specifier: ^4.1.5
         version: 4.1.5(@vitest/browser-playwright@4.1.5)(vite@8.0.3(@emnapi/core@1.9.1)(@emnapi/runtime@1.9.1))
 
 packages:
