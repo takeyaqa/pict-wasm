@@ -4,7 +4,7 @@ on:
     types: [published]
 
 env:
-  PNPM_VERSION: 10
+  PNPM_VERSION: 11
   NODE_VERSION: 22
   PYTHON_VERSION: 3.13
 
@@ -37,9 +37,7 @@ jobs:
           key: emsdk-${{ runner.os }}-${{ hashFiles('.emsdk_version') }}
       - name: Install Emscripten SDK
         run: bash install_emsdk.sh
-      - name: Update npm to latest version
-        run: npm install -g npm@latest
-      - run: pnpm install
+      - run: pnpm ci
       - name: Build WebAssembly
         run: |
           source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"

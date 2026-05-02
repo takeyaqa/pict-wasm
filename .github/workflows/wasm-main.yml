@@ -3,7 +3,7 @@ on:
   pull_request:
 
 env:
-  PNPM_VERSION: 10
+  PNPM_VERSION: 11
   NODE_VERSION: 22
   PYTHON_VERSION: 3.13
 
@@ -33,7 +33,7 @@ jobs:
           key: emsdk-${{ runner.os }}-${{ hashFiles('.emsdk_version') }}
       - name: Install Emscripten SDK
         run: bash install_emsdk.sh
-      - run: pnpm install
+      - run: pnpm ci
       - name: Build WebAssembly
         run: |
           source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
@@ -56,7 +56,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm ci
       - run: pnpm run fmt:check
   lint:
     needs: build-wasm
@@ -71,7 +71,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm ci
       - name: Download dist artifact
         uses: actions/download-artifact@v8
         with:
@@ -91,7 +91,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm ci
       - name: Download dist artifact
         uses: actions/download-artifact@v8
         with:
@@ -115,7 +115,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm ci
       - name: Download dist artifact
         uses: actions/download-artifact@v8
         with:
@@ -140,7 +140,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: pnpm
-      - run: pnpm install
+      - run: pnpm ci
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
       - name: Download dist artifact
