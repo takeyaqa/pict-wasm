@@ -38,7 +38,7 @@ jobs:
       - name: Install Emscripten SDK
         run: bash install_emsdk.sh
       - name: Update npm to latest version
-        run: npm install -g npm@latest
+        run: npm install -g npm@10.9.8
       - run: pnpm install
       - name: Build WebAssembly
         run: |
