@@ -1,0 +1,48 @@
+name: Publish WebAssembly to npm registry
+on:
+  release:
+    types: [published]
+
+env:
+  PNPM_VERSION: 10
+  NODE_VERSION: 22
+  PYTHON_VERSION: 3.13
+
+permissions:
+  id-token: write # Required for OIDC
+  contents: read
+
+jobs:
+  publish-wasm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@26f6d4f2c533a43e6b5da0b4a5dd983f98f7b49a # v6.0.4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          cache: true
+      - uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Cache Emscripten SDK
+        uses: actions/cache@v5
+        with:
+          path: .emsdk
+          key: emsdk-${{ runner.os }}-${{ hashFiles('.emsdk_version') }}
+      - name: Install Emscripten SDK
+        run: bash install_emsdk.sh
+      - name: Update npm to latest version
+        run: npm install -g npm@10.9.8 && npm install -g npm@11
+      - run: pnpm install
+      - name: Build WebAssembly
+        run: |
+          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
+          pnpm run build
+      - name: Publish to npm registry
+        run: pnpm publish --tag latest --no-git-checks
