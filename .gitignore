@@ -18,9 +18,15 @@
 *.ipch
 *.VC.*db*
 pict
+pict-benchmark
 *.o
+*.so
 .DS_Store
 build
+
+.config/zellij.kdl
+go
+
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
