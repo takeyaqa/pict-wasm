@@ -36,3 +36,7 @@ updates:
     commit-message:
       prefix: "ci"
       include: "scope"
+    exclude-paths:
+      - ".github/workflows/codeql-analysis.yml"
+      - ".github/workflows/main.yml"
+      - ".github/workflows/nuget-publish.yml"
