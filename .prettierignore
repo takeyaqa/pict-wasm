@@ -1,7 +1,7 @@
 .github/workflows/codeql-analysis.yml
 .github/workflows/main.yml
 .github/workflows/nuget-publish.yml
-.github/copilot-instructions.yml
+.github/copilot-instructions.md
 api/
 api-usage/
 cli/
