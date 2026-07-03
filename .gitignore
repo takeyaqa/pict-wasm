@@ -23,6 +23,9 @@ pict-benchmark
 *.so
 .DS_Store
 build
+/*/ARM64/*
+/*/Win32/*
+/*/x64/*
 .vscode/settings.json
 .config/zellij.kdl
 go
