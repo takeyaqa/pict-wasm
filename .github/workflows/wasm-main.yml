@@ -6,6 +6,7 @@ env:
   PNPM_VERSION: 10
   NODE_VERSION: 22
   PYTHON_VERSION: 3.13
+  EMSDK_VERSION: 5.0.7
 
 permissions:
   contents: read
@@ -26,18 +27,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Cache Emscripten SDK
-        uses: actions/cache@v6
+      - uses: emscripten-core/setup-emsdk@4528d102f7230f0e7b276855c01ea1159be0e984 # v16
         with:
-          path: .emsdk
-          key: emsdk-${{ runner.os }}-${{ hashFiles('.emsdk_version') }}
-      - name: Install Emscripten SDK
-        run: bash install_emsdk.sh
+          version: ${{ env.EMSDK_VERSION }}
+          actions-cache-folder: .emsdk
       - run: pnpm install
       - name: Build WebAssembly
-        run: |
-          source "$GITHUB_WORKSPACE/.emsdk/emsdk_env.sh"
-          pnpm run build
+        run: pnpm run build
       - name: Upload dist artifact
         uses: actions/upload-artifact@v7
         with:
