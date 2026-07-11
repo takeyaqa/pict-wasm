@@ -8,8 +8,7 @@ WebAssembly build of Microsoft PICT (Pairwise Independent Combinatorial Testing)
 
 ```bash
 # Set up Emscripten SDK (required for first-time setup)
-./install_emsdk.sh
-source .emsdk/emsdk_env.sh
+mise install
 
 # Install dependencies and Playwright browsers
 pnpm install

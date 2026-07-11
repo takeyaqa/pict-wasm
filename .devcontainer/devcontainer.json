@@ -11,8 +11,6 @@
     }
   },
 
-  "postCreateCommand": "./install_emsdk.sh",
-
   "customizations": {
     "vscode": {
       "settings": {
