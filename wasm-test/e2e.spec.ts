@@ -43,30 +43,9 @@ describe("PictRunner", () => {
         "Compression",
       ]);
       expect(output.result.body.length).toEqual(56);
-      expect(output.result.body[0]).toEqual([
-        "Span",
-        "5000",
-        "Slow",
-        "NTFS",
-        "16384",
-        "OFF",
-      ]);
-      expect(output.result.body[27]).toEqual([
-        "Single",
-        "100",
-        "Quick",
-        "NTFS",
-        "512",
-        "OFF",
-      ]);
-      expect(output.result.body[55]).toEqual([
-        "Mirror",
-        "5000",
-        "Slow",
-        "NTFS",
-        "2048",
-        "OFF",
-      ]);
+      expect(output.result.body[0]).toEqual(["Span", "5000", "Slow", "NTFS", "16384", "OFF"]);
+      expect(output.result.body[27]).toEqual(["Single", "100", "Quick", "NTFS", "512", "OFF"]);
+      expect(output.result.body[55]).toEqual(["Mirror", "5000", "Slow", "NTFS", "2048", "OFF"]);
       expect(output.modelFile).toBe(`Type: Single, Span, Stripe, Mirror, RAID-5
 Size: 10, 100, 500, 1000, 5000, 10000, 40000
 Format method: Quick, Slow
@@ -126,8 +105,7 @@ Compression: ON, OFF`);
         "👾 🙇 💁 🙅 🙆 🙋 🙎 🙍",
         "مرحبًا",
       ]);
-      expect(output.modelFile)
-        .toBe(`null: undefined, true, false, NaN, Infinity, eval
+      expect(output.modelFile).toBe(`null: undefined, true, false, NaN, Infinity, eval
 ⅛⅜⅝⅞: Ω≈ç√∫˜µ≤≥÷, ٠١٢٣٤٥٦٧٨٩, ¡™£¢∞§¶•ªº–≠
 社會科學院語學研究所: 表ポあA鷗ŒéＢ逍Üßªąñ丂㐀𠀀, 캄사함니다
 ╯°□°）╯︵ ┻━┻: 👾 🙇 💁 🙅 🙆 🙋 🙎 🙍, ✋🏿 💪🏿 👐🏿 🙌🏿 👏🏿 🙏🏿, 🇺🇸🇷🇺🇸🇦
@@ -170,30 +148,9 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`,
         "Compression",
       ]);
       expect(output.result.body.length).toEqual(56);
-      expect(output.result.body[0]).toEqual([
-        "Stripe",
-        "5000",
-        "Quick",
-        "NTFS",
-        "16384",
-        "OFF",
-      ]);
-      expect(output.result.body[27]).toEqual([
-        "Mirror",
-        "10000",
-        "Slow",
-        "NTFS",
-        "16384",
-        "ON",
-      ]);
-      expect(output.result.body[55]).toEqual([
-        "Mirror",
-        "100",
-        "Quick",
-        "FAT",
-        "65536",
-        "OFF",
-      ]);
+      expect(output.result.body[0]).toEqual(["Stripe", "5000", "Quick", "NTFS", "16384", "OFF"]);
+      expect(output.result.body[27]).toEqual(["Mirror", "10000", "Slow", "NTFS", "16384", "ON"]);
+      expect(output.result.body[55]).toEqual(["Mirror", "100", "Quick", "FAT", "65536", "OFF"]);
       expect(output.modelFile).toBe(`Type: Single, Span, Stripe, Mirror, RAID-5
 Size: 10, 100, 500, 1000, 5000, 10000, 40000
 Format method: Quick, Slow
@@ -238,30 +195,9 @@ IF [File system] = "FAT32" THEN [Size] <= 32000;`);
         "Compression",
       ]);
       expect(output.result.body.length).toEqual(281);
-      expect(output.result.body[0]).toEqual([
-        "RAID-5",
-        "10",
-        "Slow",
-        "NTFS",
-        "1024",
-        "OFF",
-      ]);
-      expect(output.result.body[140]).toEqual([
-        "RAID-5",
-        "1000",
-        "Quick",
-        "FAT32",
-        "1024",
-        "OFF",
-      ]);
-      expect(output.result.body[280]).toEqual([
-        "RAID-5",
-        "10000",
-        "Slow",
-        "FAT32",
-        "2048",
-        "OFF",
-      ]);
+      expect(output.result.body[0]).toEqual(["RAID-5", "10", "Slow", "NTFS", "1024", "OFF"]);
+      expect(output.result.body[140]).toEqual(["RAID-5", "1000", "Quick", "FAT32", "1024", "OFF"]);
+      expect(output.result.body[280]).toEqual(["RAID-5", "10000", "Slow", "FAT32", "2048", "OFF"]);
       expect(output.modelFile).toBe(`Type: Single, Span, Stripe, Mirror, RAID-5
 Size: 10, 100, 500, 1000, 5000, 10000, 40000
 Format method: Quick, Slow
@@ -404,30 +340,9 @@ B: x, y`);
         "Compression",
       ]);
       expect(output.result.body.length).toEqual(56);
-      expect(output.result.body[0]).toEqual([
-        "Span",
-        "5000",
-        "Slow",
-        "NTFS",
-        "16384",
-        "OFF",
-      ]);
-      expect(output.result.body[27]).toEqual([
-        "Single",
-        "100",
-        "Quick",
-        "NTFS",
-        "512",
-        "OFF",
-      ]);
-      expect(output.result.body[55]).toEqual([
-        "Mirror",
-        "5000",
-        "Slow",
-        "NTFS",
-        "2048",
-        "OFF",
-      ]);
+      expect(output.result.body[0]).toEqual(["Span", "5000", "Slow", "NTFS", "16384", "OFF"]);
+      expect(output.result.body[27]).toEqual(["Single", "100", "Quick", "NTFS", "512", "OFF"]);
+      expect(output.result.body[55]).toEqual(["Mirror", "5000", "Slow", "NTFS", "2048", "OFF"]);
       expect(output.modelFile).toBe(`Type: Single, Span, Stripe, Mirror, RAID-5
 Size: 10, 100, 500, 1000, 5000, 10000, 40000
 Format method: Quick, Slow
@@ -475,15 +390,10 @@ os: windows, linux`);
       });
 
       expect(outputCaseInsensitive.result.header).toEqual(["OS", "B"]);
-      expect(
-        outputCaseInsensitive.result.body.every(([, b]) => b === "X"),
-      ).toBe(true);
+      expect(outputCaseInsensitive.result.body.every(([, b]) => b === "X")).toBe(true);
       expect(outputCaseSensitive.result.header).toEqual(["OS", "B"]);
       expect(outputCaseSensitive.result.body).toContainEqual(["Win10", "Y"]);
-      expect(outputCaseSensitive.result.body).not.toContainEqual([
-        "win10",
-        "Y",
-      ]);
+      expect(outputCaseSensitive.result.body).not.toContainEqual(["win10", "Y"]);
     });
 
     it("should run with custom value separator", () => {
@@ -537,21 +447,15 @@ Browser: Chrome, Firefox`);
       );
 
       expect(output.result.header).toEqual(["A", "B"]);
-      expect(
-        output.result.body.some(
-          ([a, b]) => a.startsWith("!") && b.startsWith("!"),
-        ),
-      ).toBe(false);
-      expect(
-        output.result.body.some(
-          ([a, b]) => a.startsWith("!") && !b.startsWith("!"),
-        ),
-      ).toBe(true);
-      expect(
-        output.result.body.some(
-          ([a, b]) => !a.startsWith("!") && b.startsWith("!"),
-        ),
-      ).toBe(true);
+      expect(output.result.body.some(([a, b]) => a.startsWith("!") && b.startsWith("!"))).toBe(
+        false,
+      );
+      expect(output.result.body.some(([a, b]) => a.startsWith("!") && !b.startsWith("!"))).toBe(
+        true,
+      );
+      expect(output.result.body.some(([a, b]) => !a.startsWith("!") && b.startsWith("!"))).toBe(
+        true,
+      );
       expect(output.modelFile).toBe(`A: !1, 0, 1
 B: !1, 0, 1`);
       expect(output.message).toBe("");
@@ -611,11 +515,7 @@ IF [A] = "Enabled" THEN [D] = "Local";`;
 
       expect(output.result.header).toEqual(["A", "B", "C", "D"]);
       expect(output.result.body.length).toBeGreaterThan(0);
-      expect(
-        output.result.body.every(
-          ([a, , , d]) => a !== "Enabled" || d === "Local",
-        ),
-      ).toBe(true);
+      expect(output.result.body.every(([a, , , d]) => a !== "Enabled" || d === "Local")).toBe(true);
       expect(output.modelFile).toBe(modelFile);
       expect(output.message).toBe("");
     });

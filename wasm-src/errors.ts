@@ -213,11 +213,7 @@ export class PictGenerationError extends PictError {
  * @returns The appropriate PictError subclass instance
  * @internal
  */
-export function createPictError(
-  code: number,
-  modelFile: string,
-  message: string,
-): PictError {
+export function createPictError(code: number, modelFile: string, message: string): PictError {
   switch (code) {
     case PictErrorCode.BadOption:
       return new PictBadOptionError(modelFile, message);

@@ -11,11 +11,11 @@ updates:
       prefix: "build"
       include: "scope"
     groups:
-      lint-and-prettier:
+      oxc:
         patterns:
+          - "oxfmt"
           - "oxlint"
           - "oxlint-tsgolint"
-          - "prettier"
       tsconfig:
         patterns:
           - "@tsconfig/*"
