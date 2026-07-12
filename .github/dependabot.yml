@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    versioning-strategy: increase
+    cooldown:
+      default-days: 1
+    commit-message:
+      prefix: "build"
+      include: "scope"
+    groups:
+      oxc:
+        patterns:
+          - "oxfmt"
+          - "oxlint"
+          - "oxlint-tsgolint"
+      tsconfig:
+        patterns:
+          - "@tsconfig/*"
+      vitest:
+        patterns:
+          - "@vitest/*"
+          - "vitest"
+    ignore:
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 1
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    exclude-paths:
+      - ".github/workflows/codeql-analysis.yml"
+      - ".github/workflows/main.yml"
+      - ".github/workflows/nuget-publish.yml"

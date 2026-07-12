@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "github.vscode-github-actions",
+    "ms-vscode.cpptools-extension-pack",
+    "ms-vscode.makefile-tools",
+    "oxc.oxc-vscode",
+    "vitest.explorer"
+  ]
+}

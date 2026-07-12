@@ -1,0 +1,80 @@
+{
+  "name": "@takeyaqa/pict-wasm",
+  "version": "3.7.4-wasm.26",
+  "description": "Unofficial WebAssembly build of Microsoft's PICT",
+  "keywords": [
+    "combinatorial-testing",
+    "pairwise",
+    "pairwise-testing",
+    "pict",
+    "test-case-generation",
+    "testing",
+    "testing-tools",
+    "webassembly"
+  ],
+  "homepage": "https://github.com/takeyaqa/pict-wasm#readme",
+  "bugs": {
+    "url": "https://github.com/takeyaqa/pict-wasm/issues"
+  },
+  "license": "MIT",
+  "author": "Takeshi Kishi",
+  "contributors": [
+    "Microsoft Corporation"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/takeyaqa/pict-wasm.git"
+  },
+  "files": [
+    "dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "make wasm && tsc",
+    "clean": "make wasm-clean",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "typecheck": "tsc --project tsconfig.typecheck.json",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:node": "vitest --project node",
+    "test:browser": "vitest --project browser"
+  },
+  "devDependencies": {
+    "@tsconfig/node-ts": "^23.6.4",
+    "@tsconfig/node22": "^22.0.5",
+    "@vitest/browser-playwright": "^4.1.9",
+    "oxfmt": "^0.58.0",
+    "oxlint": "^1.73.0",
+    "oxlint-tsgolint": "^0.24.0",
+    "playwright": "^1.61.1",
+    "typescript": "~5.9.3",
+    "vitest": "^4.1.9"
+  },
+  "devEngines": {
+    "packageManager": [
+      {
+        "name": "pnpm",
+        "version": "^10"
+      }
+    ],
+    "runtime": {
+      "name": "node",
+      "version": "^22"
+    }
+  },
+  "engines": {
+    "node": "^22 || ^24"
+  }
+}

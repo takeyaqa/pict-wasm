@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    ".github/workflows/codeql-analysis.yml",
+    ".github/workflows/main.yml",
+    ".github/workflows/nuget-publish.yml",
+    ".github/copilot-instructions.md",
+    "api/",
+    "api-usage/",
+    "cli/",
+    "clidll/",
+    "clidll-usage/",
+    "doc/",
+    "test/",
+    "_build.cmd",
+    "_clean.cmd",
+    "_test.cmd",
+    "_update_baselines.cmd",
+    "CMakeLists.txt",
+    "Containerfile",
+    "Makefile",
+    "Microsoft.Test.Pict.nuspec",
+    "pict.sln",
+    "pict.spec",
+    "README.md",
+    "SECURITY.md"
+  ]
+}
