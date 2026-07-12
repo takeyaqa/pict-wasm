@@ -43,8 +43,8 @@
     "clean": "make wasm-clean",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
-    "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
     "typecheck": "tsc --project tsconfig.typecheck.json",
     "test": "vitest",
     "test:run": "vitest run",
@@ -52,17 +52,14 @@
     "test:browser": "vitest --project browser"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@tsconfig/node-ts": "^23.6.4",
     "@tsconfig/node22": "^22.0.5",
     "@vitest/browser-playwright": "^4.1.9",
-    "@vitest/eslint-plugin": "^1.6.20",
-    "eslint": "^10.6.0",
-    "eslint-config-prettier": "^10.1.8",
+    "oxlint": "^1.73.0",
+    "oxlint-tsgolint": "^0.24.0",
     "playwright": "^1.61.1",
     "prettier": "^3.9.4",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.62.1",
     "vitest": "^4.1.9"
   },
   "engines": {

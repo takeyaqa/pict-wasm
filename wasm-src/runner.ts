@@ -259,7 +259,6 @@ export class PictRunner {
       }
 
       // Execute PICT and capture the return code
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- callMain is an Emscripten runtime method without proper TypeScript definitions
       const returnCode = this.pict.callMain([
         modelFileName,
         ...switches,
