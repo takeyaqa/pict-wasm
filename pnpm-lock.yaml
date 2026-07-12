@@ -26,9 +26,6 @@ importers:
       oxlint-tsgolint:
         specifier: ^0.24.0
         version: 0.24.0
-      playwright:
-        specifier: ^1.61.1
-        version: 1.61.1
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
