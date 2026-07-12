@@ -11,13 +11,11 @@ updates:
       prefix: "build"
       include: "scope"
     groups:
-      eslint-and-prettier:
+      lint-and-prettier:
         patterns:
-          - "@eslint/*"
-          - "eslint"
-          - "eslint-config-prettier"
+          - "oxlint"
+          - "oxlint-tsgolint"
           - "prettier"
-          - "typescript-eslint"
       tsconfig:
         patterns:
           - "@tsconfig/*"
