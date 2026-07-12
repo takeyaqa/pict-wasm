@@ -7,7 +7,7 @@ on:
 
 env:
   # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: .
+  SOLUTION_FILE_PATH: pict.sln
 
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -16,27 +16,116 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     permissions:
-      packages: write
+      contents: read
+    strategy:
+      matrix:
+        # Add additional configurations if needed.
+        configuration: [Release, Debug]
+        # If you need to build for multiple platforms, you can add them here.
+        platform: [x64, x86, ARM64]
       
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.2
+      uses: microsoft/setup-msbuild@v2
 
     - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
       # Add additional options to the MSBuild command line here (like platform or verbosity level).
       # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+      run: msbuild /m /p:Configuration=${{ matrix.configuration }} /p:Platform=${{ matrix.platform }} ${{env.SOLUTION_FILE_PATH}}
+
+    - name: Build static-CRT API lib variant
+      # The solution build above produces the default (dynamic /MD CRT) pict.lib.
+      # Build the api project again with the statically linked CRT (/MT) so the package
+      # can also ship a static variant for consumers that link the static runtime.
+      shell: pwsh
+      run: |
+        $platformDir = '${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}'
+        $runtime = '${{ matrix.configuration == 'Debug' && 'MultiThreadedDebug' || 'MultiThreaded' }}'
+        $out = "$PWD\$platformDir\${{ matrix.configuration }}\api-static\"
+        msbuild api\pictapi.vcxproj /m `
+          /p:Configuration=${{ matrix.configuration }} `
+          /p:Platform=$platformDir `
+          /p:ApiRuntimeLibrary=$runtime `
+          /p:OutDir=$out `
+          /p:IntDir=${out}obj\
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts-${{ matrix.configuration }}-${{ matrix.platform }}
+        path: |
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/api/pict.lib
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/api-static/pict.lib
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/pict.exe
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/cli/pict.pdb
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/pict.dll
+          ${{ matrix.platform == 'x86' && 'Win32' || matrix.platform }}/${{ matrix.configuration }}/clidll/pict.pdb
+        retention-days: 1
+
+  package:
+    runs-on: windows-latest
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+    
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download all build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+
+    - name: Verify source files exist
+      shell: pwsh
+      run: |
+        # Verify all required source files exist
+        Write-Host "Checking for required files..."
+        if (Test-Path "api/pictapi.h") { Write-Host "✓ api/pictapi.h found" } else { Write-Host "✗ api/pictapi.h missing"; exit 1 }
+        if (Test-Path "doc/pict.md") { Write-Host "✓ doc/pict.md found" } else { Write-Host "✗ doc/pict.md missing"; exit 1 }
+        if (Test-Path "LICENSE.TXT") { Write-Host "✓ LICENSE.TXT found" } else { Write-Host "✗ LICENSE.TXT missing"; exit 1 }
+        if (Test-Path "Microsoft.Test.Pict.targets") { Write-Host "✓ Microsoft.Test.Pict.targets found" } else { Write-Host "✗ Microsoft.Test.Pict.targets missing"; exit 1 }
+        if (Test-Path "Microsoft.Test.Pict.nuspec") { Write-Host "✓ Microsoft.Test.Pict.nuspec found" } else { Write-Host "✗ Microsoft.Test.Pict.nuspec missing"; exit 1 }
+
+    - name: Restore build structure
+      shell: pwsh
+      run: |
+        # Copy artifacts back to original build structure
+        Get-ChildItem -Path "artifacts" -Directory | ForEach-Object {
+          $artifactName = $_.Name
+          if ($artifactName -match "build-artifacts-(.+)-(.+)") {
+            $config = $matches[1]
+            $platform = $matches[2]
+            
+            # Map platform names to match directory structure
+            $platformDir = $platform
+            if ($platform -eq "x86") {
+              $platformDir = "Win32"
+            }
+            
+            # Create the target directory structure (platform/configuration)
+            $targetDir = "$platformDir/$config"
+            if (!(Test-Path $targetDir)) {
+              New-Item -ItemType Directory -Path $targetDir -Force
+            }
+            
+            # Copy contents from artifact root (upload-artifact strips the common ancestor path)
+            Copy-Item -Path "$($_.FullName)/*" -Destination $targetDir -Recurse -Force
+          }
+        }
 
     - name: Add NUGET to PATH
-      uses: NuGet/setup-nuget@v1.0.5
+      uses: NuGet/setup-nuget@v2
 
     - name: Create a package
+      shell: pwsh
       run: nuget pack
 
     - name: Publish NuGet package
+      shell: pwsh
       run: dotnet nuget push "Microsoft.Test.Pict.*.nupkg" -k ${{ secrets.GITHUB_TOKEN }} -s https://nuget.pkg.github.com/microsoft/index.json --skip-duplicate
