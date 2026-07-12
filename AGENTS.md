@@ -55,7 +55,7 @@ This project wraps Microsoft's C++ PICT tool as a WebAssembly module with a Type
 - **Node 22+**: Required runtime version
 - **pnpm 10**: Required package manager
 - **Strict TypeScript** - `tseslint/strictTypeChecked` for source, `tseslint/recommended` for tests
-- **Prettier** for formatting
+- **oxfmt** for formatting
 - Tests run in 4 environments: Node.js, Chromium, Firefox, WebKit
 - **Commit Messages**: Use Conventional Commits format (e.g., `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:`, `ci:`)
 - **Before committing** - Always run `pnpm run fmt`, `pnpm run lint`, `pnpm run typecheck`, and `pnpm run test:run`

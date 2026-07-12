@@ -5,11 +5,7 @@ import type {
   PictOutput,
   PictRunOptions,
 } from "./types.js";
-import {
-  createPictError,
-  PictBadOptionError,
-  PictErrorCode,
-} from "./errors.js";
+import { createPictError, PictBadOptionError, PictErrorCode } from "./errors.js";
 import createModule, { type MainModule } from "../dist/pict.js";
 
 /**
@@ -151,10 +147,7 @@ export class PictRunner {
    * }
    * ```
    */
-  public run(
-    parameters: PictParameter[],
-    runOptions: PictRunOptions = {},
-  ): PictOutput {
+  public run(parameters: PictParameter[], runOptions: PictRunOptions = {}): PictOutput {
     const model = this.buildStructuredModel(parameters, runOptions);
     return this.executeModel(model, runOptions);
   }
@@ -177,28 +170,18 @@ export class PictRunner {
    * @throws {PictBadRowSeedFileError} When the row seed file is invalid.
    * @throws {PictGenerationError} When test case generation fails.
    */
-  public runModel(
-    modelFileText: string,
-    runOptions: PictModelRunOptions = {},
-  ): PictOutput {
+  public runModel(modelFileText: string, runOptions: PictModelRunOptions = {}): PictOutput {
     this.assertNoStructuredModelOptions(modelFileText, runOptions);
     return this.executeModel(modelFileText, runOptions);
   }
 
-  private buildStructuredModel(
-    parameters: PictParameter[],
-    runOptions: PictRunOptions,
-  ): string {
+  private buildStructuredModel(parameters: PictParameter[], runOptions: PictRunOptions): string {
     const { subModels, constraintsText } = runOptions;
 
-    const parametersText = parameters
-      .map((m) => `${m.name}: ${m.values}`)
-      .join("\n");
+    const parametersText = parameters.map((m) => `${m.name}: ${m.values}`).join("\n");
     const subModelsText = subModels
       ? subModels
-          .map(
-            (m) => `{ ${m.parameterNames.join(", ")} } @ ${m.order.toString()}`,
-          )
+          .map((m) => `{ ${m.parameterNames.join(", ")} } @ ${m.order.toString()}`)
           .join("\n")
       : "";
     let model = parametersText;
@@ -211,10 +194,7 @@ export class PictRunner {
     return model;
   }
 
-  private executeModel(
-    model: string,
-    runOptions: { options?: PictOptions },
-  ): PictOutput {
+  private executeModel(model: string, runOptions: { options?: PictOptions }): PictOutput {
     const { options } = runOptions;
     const modelFileName = "model.txt";
     const seedRowsFileName = "seedrows.txt";
@@ -259,10 +239,7 @@ export class PictRunner {
       }
 
       // Execute PICT and capture the return code
-      const returnCode = this.pict.callMain([
-        modelFileName,
-        ...switches,
-      ]) as number;
+      const returnCode = this.pict.callMain([modelFileName, ...switches]) as number;
 
       const err = this.stderrCapture.getOuts();
       const out = this.stdoutCapture.getOuts();
