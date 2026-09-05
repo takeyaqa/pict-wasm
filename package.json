@@ -69,7 +69,7 @@
     },
     "runtime": {
       "name": "node",
-      "version": "^22"
+      "version": "24.19.0"
     }
   },
   "engines": {
