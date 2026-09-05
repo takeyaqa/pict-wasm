@@ -4,9 +4,7 @@ on:
     types: [published]
 
 env:
-  PNPM_VERSION: 10
-  NODE_VERSION: 22
-  PYTHON_VERSION: 3.13
+  PYTHON_VERSION: 3.13.3
   EMSDK_VERSION: 6.0.8
 
 permissions:
@@ -23,11 +21,10 @@ jobs:
           ref: refs/tags/${{ github.event.release.tag_name }}
       - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
         with:
-          version: ${{ env.PNPM_VERSION }}
           cache: true
       - uses: actions/setup-node@v7
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: node-version-file: "package.json"
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - uses: actions/setup-python@v7
@@ -37,8 +34,6 @@ jobs:
         with:
           version: ${{ env.EMSDK_VERSION }}
           actions-cache-folder: .emsdk
-      - name: Update npm to latest version
-        run: npm install -g npm@10.9.8 && npm install -g npm@11
       - run: pnpm install
       - name: Build WebAssembly
         run: pnpm run build
