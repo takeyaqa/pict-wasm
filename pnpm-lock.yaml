@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@tsconfig/node-ts':
-        specifier: ^23.6.4
-        version: 23.6.4
       '@tsconfig/node22':
         specifier: ^22.0.6
         version: 22.0.6
@@ -443,9 +440,6 @@ packages:
 
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
-
-  '@tsconfig/node-ts@23.6.4':
-    resolution: {integrity: sha512-37BMJvNQZ+vTgd1xG2TGBkJ6ENeT4eO4Wh2CHrnn0IwH7ybLFCzh4Uc//kc7UIvqiRac4uGdIc1meKOjMSlKzw==}
 
   '@tsconfig/node22@22.0.6':
     resolution: {integrity: sha512-/5thavHAnWDZwH2H6eEn/T8pBEBhtuKaWGMslsj82kJfvzQgOgEMK7X4goBbIUjgVtAzPTtM9Ml64LA0uxO6Iw==}
@@ -1071,8 +1065,6 @@ snapshots:
   '@rolldown/pluginutils@1.0.1': {}
 
   '@standard-schema/spec@1.1.0': {}
-
-  '@tsconfig/node-ts@23.6.4': {}
 
   '@tsconfig/node22@22.0.6': {}
 
