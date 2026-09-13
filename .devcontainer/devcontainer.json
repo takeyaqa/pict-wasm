@@ -1,28 +1,32 @@
 {
-  "name": "C++",
+  "name": "pict-wasm",
   "image": "mcr.microsoft.com/devcontainers/cpp",
   "features": {
+    "ghcr.io/ebaskoro/devcontainer-features/emscripten:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:1": {
-      "version": "22"
+      "version": "24.19.0",
+      "pnpmVersion": "10.34.5"
     },
     "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.13"
+      "version": "3.13.3"
     }
   },
 
   "customizations": {
     "vscode": {
       "settings": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "oxc.oxc-vscode",
+        "oxc.fmt.configPath": ".oxfmtrc.json"
       },
       "extensions": [
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
         "github.vscode-github-actions",
         "ms-vscode.cpptools-extension-pack",
         "ms-vscode.makefile-tools",
-        "vitest.explorer"
+        "oxc.oxc-vscode",
+        "vitest.explorer",
+        "-dbaeumer.vscode-eslint"
       ]
     }
   }

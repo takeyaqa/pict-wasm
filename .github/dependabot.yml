@@ -36,3 +36,16 @@ updates:
       - ".github/workflows/codeql-analysis.yml"
       - ".github/workflows/main.yml"
       - ".github/workflows/nuget-publish.yml"
+  - package-ecosystem: "devcontainers"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    cooldown:
+      default-days: 3
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    groups:
+      monthly-batch:
+        patterns:
+          - "*"
