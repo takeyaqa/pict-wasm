@@ -4,7 +4,7 @@ on:
 
 env:
   PYTHON_VERSION: 3.13.3
-  EMSDK_VERSION: 6.0.10
+  EMSDK_VERSION: 6.0.7
 
 permissions:
   contents: read
