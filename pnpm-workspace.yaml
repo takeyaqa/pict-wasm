@@ -2,3 +2,4 @@ minimumReleaseAge: 4320
 trustPolicy: no-downgrade
 trustPolicyExclude:
   - undici-types
+pmOnFail: ignore

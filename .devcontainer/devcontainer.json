@@ -2,11 +2,10 @@
   "name": "pict-wasm",
   "image": "mcr.microsoft.com/devcontainers/cpp",
   "features": {
-    "ghcr.io/ebaskoro/devcontainer-features/emscripten:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:2": {
       "version": "24.19.0",
-      "pnpmVersion": "10.34.5"
+      "pnpmVersion": "12"
     },
     "ghcr.io/devcontainers/features/python:1": {
       "version": "3.13.3"
