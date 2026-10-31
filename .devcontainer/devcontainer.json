@@ -2,7 +2,6 @@
   "name": "pict-wasm",
   "image": "mcr.microsoft.com/devcontainers/cpp",
   "features": {
-    "ghcr.io/ebaskoro/devcontainer-features/emscripten:1": {},
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/node:2": {
       "version": "24.19.0",
