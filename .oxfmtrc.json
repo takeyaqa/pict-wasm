@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
   "ignorePatterns": [
+    ".devcontainer/devcontainer-lock.json",
     ".github/workflows/codeql-analysis.yml",
     ".github/workflows/main.yml",
     ".github/workflows/nuget-publish.yml",
