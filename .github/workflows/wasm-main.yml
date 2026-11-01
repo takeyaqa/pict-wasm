@@ -2,10 +2,6 @@ name: Check and Build WebAssembly
 on:
   pull_request:
 
-env:
-  PYTHON_VERSION: 3.13.3
-  EMSDK_VERSION: 6.0.7
-
 permissions:
   contents: read
 
@@ -19,7 +15,7 @@ jobs:
           cache: true
       - uses: emscripten-core/setup-emsdk@v16
         with:
-          version: ${{ env.EMSDK_VERSION }}
+          version: 6.0.13
       - run: pnpm run build
       - uses: actions/upload-artifact@v7.0.2
         with:
