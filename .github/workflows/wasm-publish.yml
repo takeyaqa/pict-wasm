@@ -3,10 +3,6 @@ on:
   release:
     types: [published]
 
-env:
-  PYTHON_VERSION: 3.13.3
-  EMSDK_VERSION: 6.0.7
-
 permissions:
   id-token: write
   contents: read
@@ -24,6 +20,6 @@ jobs:
           cache: true
       - uses: emscripten-core/setup-emsdk@v16
         with:
-          version: ${{ env.EMSDK_VERSION }}
+          version: 6.0.13
       - run: pnpm run build
       - run: pnpm publish --tag latest --no-git-checks
