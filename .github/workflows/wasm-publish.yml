@@ -22,9 +22,6 @@ jobs:
       - uses: pnpm/setup@v3.1.2
         with:
           cache: true
-      - uses: actions/setup-python@v7.1.0
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
       - uses: emscripten-core/setup-emsdk@v16
         with:
           version: ${{ env.EMSDK_VERSION }}
