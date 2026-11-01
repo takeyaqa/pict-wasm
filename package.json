@@ -54,13 +54,13 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.6",
     "@types/node": "22.20.5",
-    "@vitest/browser-playwright": "^4.1.11",
-    "oxfmt": "^0.71.0",
-    "oxlint": "^1.86.0",
-    "oxlint-tsgolint": "^7.0.2003",
-    "playwright": "^1.63.0",
+    "@vitest/browser-playwright": "^5.0.5",
+    "oxfmt": "^0.75.0",
+    "oxlint": "^1.90.0",
+    "oxlint-tsgolint": "^7.0.2005",
+    "playwright": "^1.64.1",
     "typescript": "~6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.5"
   },
   "devEngines": {
     "packageManager": {
