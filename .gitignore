@@ -45,16 +45,6 @@ go
 /node_modules
 /wasm-work
 
-# mise
-# https://mise.jdx.dev/configuration.html
-# https://mise.jdx.dev/configuration/environments.html
-.mise.*.local.toml
-.mise.local.toml
-mise.*.local.toml
-mise.local.toml
-.mise/*.local.toml
-mise/*.local.toml
-
 # Agents
 .claude/
 .codex/

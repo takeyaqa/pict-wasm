@@ -201,10 +201,9 @@ import type {
 
 ## Build and Test
 
-```bash
-# Set up Emscripten SDK (required for first-time setup)
-mise install
+[Set up Emscripten SDK (required for first-time setup)](https://emscripten.org/docs/getting_started/downloads.html)
 
+```bash
 # Install dependencies and Playwright browsers
 pnpm install
 pnpm exec playwright install --with-deps
